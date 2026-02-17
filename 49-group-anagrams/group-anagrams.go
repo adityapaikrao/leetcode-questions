@@ -2,11 +2,10 @@ type Config [26]int
 
 func groupAnagrams(strs []string) [][]string {
     hmap := make(map[Config][]string, 0)
-
     for _, str := range strs{
         currConfig := Config{}
         for _, ch := range str{
-            currConfig[int(ch) - int('a')]++
+            currConfig[ch - 'a']++
         }
         hmap[currConfig] = append(hmap[currConfig], str)
     }
