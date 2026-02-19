@@ -44,10 +44,10 @@ func (this *Codec) serialize(root *TreeNode) string {
 
 // Deserializes your encoded data to tree.
 func (this *Codec) deserialize(data string) *TreeNode {    
-    fmt.Println(data)
     index := 0
     stringSlice := strings.Split(data, ",")
     stringSlice = stringSlice[:len(stringSlice) - 1]
+    
     var buildTree func() *TreeNode
     buildTree = func() *TreeNode{
         if stringSlice[index] == "N"{
