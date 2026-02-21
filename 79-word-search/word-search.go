@@ -34,7 +34,7 @@ func findWord(wordIndex int, board *[][]byte, word *string, boardRow, boardCol i
 func exist(board [][]byte, word string) bool {
     for i := range board{
         for j := range board[0]{
-            if findWord(0, &board, &word, i, j){
+            if word[0] == board[i][j] && findWord(0, &board, &word, i, j){
                 return true
             }
         }
