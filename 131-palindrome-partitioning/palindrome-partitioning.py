@@ -4,27 +4,18 @@ class Solution:
         all_partitions = []
         curr_partition = []
 
+        # memoized palindrome checks
         is_palindrome = [[False] * n for _ in range(n)]
         for i in range(n):
-            is_palindrome[i][i] = True
+            is_palindrome[i][i] = True # length 1 palindromes
             if i < n - 1:
-                is_palindrome[i][i+1] = (s[i] == s[i+1])
+                is_palindrome[i][i+1] = (s[i] == s[i+1]) # length 2 palindromes
         
         for length in range(3, n+1):
             for i in range(n - length + 1):
                 j = i + length - 1
                 if s[i] == s[j] and is_palindrome[i+1][j-1]:
                     is_palindrome[i][j] = True
-            
-        # print(is_palindrome)
-
-        # def is_palindrome(s: str, start: int, end: int) -> bool:
-        #     while start < end:
-        #         if s[start] != s[end]:
-        #             return False
-        #         start += 1
-        #         end -= 1
-        #     return True
 
         def get_partitions(start_index: int) -> None:
             # reached end
