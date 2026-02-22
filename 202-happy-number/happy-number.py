@@ -5,7 +5,7 @@ class Solution:
             curr_sum = 0
             while num > 0:
                 curr_sum += (num % 10) ** 2
-                num = num // 10
+                num //= 10
             
             if curr_sum == 1:
                 return True
