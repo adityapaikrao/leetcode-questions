@@ -61,7 +61,7 @@ func placeQueens(colIdx int, placement [][]string, allPlacements *[][]string) {
 
 
 func solveNQueens(n int) [][]string {
-    allPlacements := make([][]string, 0, n)
+    allPlacements := make([][]string, 0)
     placement := make([][]string, n)
     for i := 0; i < n; i++ {
         placement[i] = make([]string, n)
