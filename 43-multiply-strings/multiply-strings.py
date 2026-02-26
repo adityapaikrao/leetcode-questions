@@ -6,8 +6,8 @@ class Solution:
 
         num1 = num1[::-1]
         num2 = num2[::-1]
-        for i1 in range(len(num1[::-1])):
-            for i2 in range(len(num2[::-1])):
+        for i1 in range(len(num1)):
+            for i2 in range(len(num2)):
                 res[i1 + i2] += int(num1[i1]) * int(num2[i2])
                 res[i1 + i2 + 1] += res[i1 + i2] // 10 # carry
                 res[i1 + i2] %= 10
