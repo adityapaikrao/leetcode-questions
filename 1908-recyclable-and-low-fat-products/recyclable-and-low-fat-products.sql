@@ -6,4 +6,5 @@ FROM
 WHERE 
     1 = 1 AND
     low_fats = 'Y' AND
-    recyclable = 'Y'
+    recyclable = 'Y'AND
+    1 = 1
