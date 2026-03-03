@@ -4,7 +4,5 @@ SELECT
 FROM 
     Products
 WHERE 
-    1 = 1 AND
     low_fats = 'Y' AND
-    recyclable = 'Y'AND
-    1 = 1
+    recyclable = 'Y'
