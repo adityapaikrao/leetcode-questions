@@ -1,34 +1,33 @@
-from collections import defaultdict, Counter
+from collections import Counter, defaultdict
 
 class DetectSquares:
 
     def __init__(self):
-        self.x_map = defaultdict(Counter)  # x -> Counter of y values
-        self.y_map = defaultdict(Counter)  # y -> Counter of x values
+        self.xmap = defaultdict(Counter) # y-coord - > count
+        self.ymap = defaultdict(Counter) # x-coord - > count
         
-
     def add(self, point: List[int]) -> None:
-        x, y = point
-        self.x_map[x][y] += 1
-        self.y_map[y][x] += 1
+        self.xmap[point[0]][point[1]] += 1
+        self.ymap[point[1]][point[0]] += 1
 
     def count(self, point: List[int]) -> int:
-        px, py = point
-        total = 0
+        # choose point on same y-coord
+        xcoord, ycoord = point
+        num_squares = 0
+        for pointx, count1 in self.ymap[ycoord].items():
+            if pointx == xcoord:
+                continue
+            side_len = abs(xcoord - pointx)
+            for target_y in [point[1] + side_len, point[1] - side_len]:
+                cnt1 = self.xmap[pointx][target_y]
+                cnt2 = self.xmap[xcoord][target_y]
 
-        # Iterate over all points sharing the same y-coordinate
-        for x2, cnt2 in self.y_map[py].items():
-            if x2 == px:
-                continue  # skip degenerate case (same point)
-            
-            side_len = abs(x2 - px)
+                num_squares += cnt1 * cnt2 * count1
+        
+        return num_squares
 
-            # Try square above and below
-            for dy in [side_len, -side_len]:
-                target_y = py + dy
-                # Need points at (px, target_y) and (x2, target_y)
-                c1 = self.x_map[px][target_y]
-                c2 = self.x_map[x2][target_y]
-                total += cnt2 * c1 * c2
 
-        return total
+# Your DetectSquares object will be instantiated and called as such:
+# obj = DetectSquares()
+# obj.add(point)
+# param_2 = obj.count(point)
