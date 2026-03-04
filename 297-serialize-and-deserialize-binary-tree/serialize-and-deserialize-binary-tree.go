@@ -11,6 +11,7 @@ import (
     "strings"
     "strconv"
 )
+
 type Codec struct {
     
 }
@@ -21,48 +22,53 @@ func Constructor() Codec {
 
 // Serializes a tree to a single string.
 func (this *Codec) serialize(root *TreeNode) string {
+    var preOrder func(node *TreeNode) 
     var builder strings.Builder
-    var preOrder func(*TreeNode)
+
     preOrder = func(node *TreeNode){
         if node == nil{
             builder.WriteString("N,")
             return
-        } 
+        }
+ 
         builder.WriteString(strconv.Itoa(node.Val))
         builder.WriteString(",")
         preOrder(node.Left)
         preOrder(node.Right)
-
         return
     }
 
     preOrder(root)
-    s := builder.String()
-    // fmt.Println("serialized", s)
-    return s
+
+    return builder.String()
 }
 
 // Deserializes your encoded data to tree.
-func (this *Codec) deserialize(data string) *TreeNode {    
+func (this *Codec) deserialize(data string) *TreeNode {   
+    nodes := strings.Split(data, ",") 
+    if len(nodes) == 0{
+        return nil
+    }
     index := 0
-    stringSlice := strings.Split(data, ",")
-    stringSlice = stringSlice[:len(stringSlice) - 1]
-    
     var buildTree func() *TreeNode
     buildTree = func() *TreeNode{
-        if stringSlice[index] == "N"{
+        if index == len(nodes){
+            return nil
+        }
+        if nodes[index] == "N"{
             index++
             return nil
         }
 
-        val, err := strconv.Atoi(stringSlice[index])
+        nodeVal, err := strconv.Atoi(string(nodes[index]))
         if err != nil{
             panic(err)
         }
-        root := &TreeNode{Val: val}
         index++
+        root := &TreeNode{Val:nodeVal}
         root.Left = buildTree()
         root.Right = buildTree()
+
         return root
     }
 
