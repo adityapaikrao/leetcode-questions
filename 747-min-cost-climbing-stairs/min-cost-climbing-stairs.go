@@ -1,11 +1,10 @@
 func minCostClimbingStairs(cost []int) int {
-    dp := make([]int, len(cost) + 1)
-    dp[0] = 0
-    dp[1] = 0
+    // dp := make([]int, len(cost) + 1)
+    prevCost1, prevCost2 := 0, 0
 
-    for i := 2; i < len(dp); i++{
-        dp[i] = min(dp[i-2] + cost[i-2], dp[i-1] + cost[i-1])
+    for i := 2; i < len(cost) + 1; i++{
+        prevCost1, prevCost2 = min(prevCost2 + cost[i-2], prevCost1 + cost[i-1]), prevCost1
     }
 
-    return dp[len(cost)]
+    return prevCost1
 }
