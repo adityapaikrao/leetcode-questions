@@ -1,0 +1,28 @@
+class Solution:
+    def swimInWater(self, grid: List[List[int]]) -> int:
+        """
+        do a BFS from initial point [(i,j), min_time] # coords, min_time to unlock
+
+        """
+        n, m = len(grid), len(grid[0])
+        visited = set()
+
+        q = [(grid[0][0], (0, 0))]
+
+        while q:
+            curr_time, curr_node = heapq.heappop(q)
+            if curr_node in visited: continue
+
+            if curr_node[0] == n-1 and curr_node[1] == m-1:
+                return curr_time
+
+            visited.add(curr_node)
+            for x_offset, y_offset in [[-1,0], [1, 0], [0, -1], [0, 1]]:
+                new_x = curr_node[0] + x_offset
+                new_y = curr_node[1] + y_offset
+
+                if 0 <= new_x < n and 0 <= new_y < m:
+                    new_time = max(grid[new_x][new_y], curr_time)
+                    heapq.heappush(q,(new_time, (new_x, new_y)))
+        
+        return 0
