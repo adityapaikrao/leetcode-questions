@@ -5,6 +5,8 @@ class Solution:
         """
         n, m = len(grid), len(grid[0])
         q = [(grid[0][0], (0, 0))]
+        times = [[float('inf')] * m for _ in range(n)]
+        times[0][0] = grid[0][0]
 
         while q:
             curr_time, curr_node = heapq.heappop(q)
@@ -20,6 +22,8 @@ class Solution:
 
                 if 0 <= new_x < n and 0 <= new_y < m and grid[new_x][new_y] != -1:
                     new_time = max(grid[new_x][new_y], curr_time)
-                    heapq.heappush(q,(new_time, (new_x, new_y)))
+                    if new_time < times[new_x][new_y]:
+                        times[new_x][new_y] = new_time
+                        heapq.heappush(q,(new_time, (new_x, new_y)))
         
         return 0
