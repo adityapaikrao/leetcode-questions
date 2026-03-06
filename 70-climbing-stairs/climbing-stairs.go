@@ -1,10 +1,9 @@
-var memo []int
-
-func init(){
-    memo = make([]int, 46)
-    memo[0] = 1
-    memo[1] = 1
-}
+var memo = func() []int{
+    m := make([]int, 46)
+    m[0] = 1
+    m[1] = 1
+    return m
+}()
 
 func climbStairs(n int) int {
     if memo[n] != 0{
