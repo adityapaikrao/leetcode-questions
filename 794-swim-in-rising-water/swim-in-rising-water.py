@@ -2,7 +2,6 @@ class Solution:
     def swimInWater(self, grid: List[List[int]]) -> int:
         """
         do a BFS from initial point [(i,j), min_time] # coords, min_time to unlock
-
         """
         n, m = len(grid), len(grid[0])
         q = [(grid[0][0], (0, 0))]
