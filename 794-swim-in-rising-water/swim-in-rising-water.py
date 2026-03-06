@@ -19,7 +19,7 @@ class Solution:
                 new_x = curr_node[0] + x_offset
                 new_y = curr_node[1] + y_offset
 
-                if 0 <= new_x < n and 0 <= new_y < m:
+                if 0 <= new_x < n and 0 <= new_y < m and grid[new_x][new_y] != -1:
                     new_time = max(grid[new_x][new_y], curr_time)
                     heapq.heappush(q,(new_time, (new_x, new_y)))
         
