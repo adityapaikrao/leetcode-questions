@@ -2,12 +2,6 @@ import (
     "math"
 )
 
-/*
-[1, 2, 5] 11
-
-[0, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
-*/
-
 func coinChange(coins []int, amount int) int {
     dp := make([]int, amount + 1)
     for i := range dp{
