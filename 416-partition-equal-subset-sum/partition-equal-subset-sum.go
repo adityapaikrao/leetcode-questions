@@ -14,11 +14,6 @@ func canPartition(nums []int) bool {
         dp[i] = make([]bool, len(nums) + 1)
     }
     
-    // Base Case: when arr is empty; can never make target
-    // for i := range target + 1{
-    //     dp[i][0] = false
-    // }
-
     // Base Case: when target is zero; always one empty subset
     for i := range len(nums) + 1{
         dp[0][i] = true
