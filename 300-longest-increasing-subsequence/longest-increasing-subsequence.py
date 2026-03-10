@@ -1,12 +1,28 @@
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
-        dp = [1] * len(nums)
-        max_len = 1
+        seq = []
 
-        for i in range(1, len(nums)):
-            for j in range(i):
-                if nums[i] > nums[j]:
-                    dp[i] = max(dp[i], dp[j] + 1)
-            max_len = max(dp[i], max_len)
-
-        return max_len
+        for num in nums:
+            low = 0
+            high = len(seq) - 1
+            if not seq or seq[-1] < num:
+                seq.append(num)
+                continue
+            
+            # find smallest elem >= num
+            while low <= high:
+                mid = (low + high) // 2
+                if seq[mid] == num:
+                    low = mid
+                    break
+                
+                if seq[mid] > num:
+                    high = mid - 1
+                else:
+                    low = mid + 1
+            
+            seq[low] = num
+            # print("for num:", num)
+            # print(seq)
+        
+        return len(seq)
