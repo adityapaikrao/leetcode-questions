@@ -3,28 +3,24 @@ func numDistinct(s string, t string) int {
         return 0
     }
 
-    dp := make([][]int, len(t) + 1)
-    for i := range dp{
-        dp[i] = make([]int, len(s) + 1)
-    }
+    prev := make([]int, len(s) + 1)
 
-    for i := range dp{
-        dp[i][len(s)] = 0
-    }
-
-    for j := range dp[0]{
-        dp[len(t)][j] = 1
+    for j := range prev{
+        prev[j] = 1
     }
 
     for i := len(t) - 1; i >= 0; i--{
+        curr := make([]int, len(s) + 1)
         for j := len(s) - 1; j >= 0; j--{
             if t[i] == s[j]{
-                dp[i][j] += dp[i + 1][j + 1]
+                curr[j] += prev[j + 1]
             }
-            dp[i][j] += dp[i][j + 1]
+            curr[j] += curr[j + 1]
         }
+
+        copy(prev, curr)
     }
 
-    return dp[0][0]
+    return prev[0]
 
 }
