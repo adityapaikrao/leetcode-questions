@@ -1,7 +1,7 @@
 -- Write your PostgreSQL query statement below
 WITH customer_first_orders AS (
     SELECT 
-        customer_id, order_date, customer_pref_delivery_date,
+        order_date, customer_pref_delivery_date,
         ROW_NUMBER() OVER (
             PARTITION BY customer_id
             ORDER BY order_date ASC
