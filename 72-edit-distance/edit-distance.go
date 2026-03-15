@@ -12,60 +12,24 @@ else -> MIN OF (i, j + 1) & (i + 1, j) & (i + 1, j + 1)
 */
 
 func minDistance(w1 string, w2 string) int {
-    // var solve func(i, j int) int
-    // memo := make([][]int, len(w1) + 1)
-    // for i := range memo {
-    //     memo[i] = make([]int, len(w2) + 1)
-    //     for j := range memo[i] {
-    //         memo[i][j] = -1
-    //     }
-    // } 
 
-    // solve = func(i, j int) int {
-    //     if memo[i][j] != -1 {
-    //         return memo[i][j]
-    //     }
-
-    //     // Base Cases
-    //     if i == len(w1) {
-    //         return len(w2[j:])
-    //     }
-    //     if j == len(w2) {
-    //         return len(w1[i:])
-    //     }
-
-    //     // Recurrence
-    //     if w1[i] == w2[j]{
-    //         memo[i][j] = solve(i + 1, j + 1)
-    //         return memo[i][j]
-    //     }
-    //     memo[i][j] = min(1 + solve(i + 1, j), 1 + solve(i, j + 1), 1 + solve(i + 1, j + 1))
-    //     return memo[i][j]
-    // }
-
-    // return solve(0, 0)
-
-    dp := make([][]int, len(w1) + 1)
-    for i := range dp {
-        dp[i] = make([]int, len(w2) + 1)
-    }
-
-    for i := range dp{
-        dp[i][len(w2)] = len(w1) - i
-    }
-    for j := range dp[0] {
-        dp[len(w1)][j] = len(w2) - j
+    prev := make([]int, len(w2) + 1)
+    for j := range prev{
+        prev[j] = len(w2) - j
     }
 
     for i := len(w1) - 1; i >= 0; i--{
+        curr := make([]int, len(w2) + 1)
+        curr[len(w2)] = len(w1) - i
         for j := len(w2) - 1; j >= 0; j--{
             if w1[i] == w2[j] {
-                dp[i][j] = dp[i + 1][j + 1]
+                curr[j] = prev[j + 1]
             } else{
-                dp[i][j] = 1 + min(dp[i][j + 1], dp[i + 1][j], dp[i + 1][j + 1])
+                curr[j] = 1 + min(curr[j + 1], prev[j], prev[j + 1])
             }
         }
+        copy(prev, curr)
     }
 
-    return dp[0][0]
+    return prev[0]
 }
