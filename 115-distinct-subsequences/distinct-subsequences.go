@@ -1,11 +1,3 @@
-/*
-dp[i][j] -> number of distinct subsequences with s[i:] & t[j:]
-
-baaag
-bag
-
-*/
-
 func numDistinct(s string, t string) int {
     
     memo := make([][]int, len(s) + 1)
@@ -42,10 +34,6 @@ func numDistinct(s string, t string) int {
         return numWays
     }
     solve(0, 0)
-    // fmt.Println(memo)
-    // for i := range memo{
-    //     fmt.Printf("for %s : %v \n", s[i:], memo[i][0])
-    // }
-    return memo[0][0]
+    return solve(0, 0)
 
 }
