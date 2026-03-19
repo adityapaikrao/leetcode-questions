@@ -17,9 +17,9 @@ func maxProfit(prices []int, fee int) int {
     // return solve(0, true)
 
     prev := make([]int, 2)
+    curr := make([]int, 2)
 
     for i := len(prices) - 1; i >= 0; i--{
-        curr := make([]int, 2)
         for j:= 1; j >= 0; j--{
             if j == 1{
                 curr[j] = max(prev[j], prev[0] - prices[i] - fee)
