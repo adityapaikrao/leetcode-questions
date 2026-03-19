@@ -16,21 +16,19 @@ func maxProfit(prices []int, fee int) int {
 
     // return solve(0, true)
 
-    dp := make([][]int, len(prices) + 1)
-    for i := range dp{
-        dp[i] = make([]int, 2)
-    }
-    dp[len(prices)] = []int{0, 0}
+    prev := make([]int, 2)
 
     for i := len(prices) - 1; i >= 0; i--{
+        curr := make([]int, 2)
         for j:= 1; j >= 0; j--{
             if j == 1{
-                dp[i][j] = max(dp[i + 1][j], dp[i+1][0] - prices[i] - fee)
+                curr[j] = max(prev[j], prev[0] - prices[i] - fee)
             } else{
-                dp[i][j] = max(dp[i+1][j], dp[i+1][1] + prices[i])
+                curr[j] = max(prev[j], prev[1] + prices[i])
             }
         }
+        copy(prev, curr)
     }
 
-    return dp[0][1]
+    return prev[1]
 }
