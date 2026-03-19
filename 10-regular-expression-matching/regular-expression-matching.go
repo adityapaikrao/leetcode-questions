@@ -31,6 +31,17 @@ func intToBool(x int) bool{
     return false
 }
 
+func canRemove(j int, p string) bool{
+    i := len(p) - 1
+    for i >= j{
+        if p[i] != '*'{
+            return false
+        }
+        i -= 2
+    }
+    return true
+}
+
 func isMatch(s string, p string) bool {
     var matches func(i, j int) bool
     memo := make([][]int, len(s) + 1)
@@ -47,8 +58,14 @@ func isMatch(s string, p string) bool {
         }
 
         // Base Cases
+        if i == len(s) && j == len(p){
+            return true
+        }
         if j == len(p){
-            return i == len(s)
+            return false
+        }
+        if i == len(s){
+            return canRemove(j, p)
         }
 
         // Recurrence
@@ -84,4 +101,14 @@ func isMatch(s string, p string) bool {
     }
 
     return matches(0, 0)
+
+    // dp := make([][]bool, len(s) + 1)
+    // for i := range dp{
+    //     dp[i] = make([]bool, len(p) + 1)
+    //     dp[i][len(p)] = (i == len(s))
+    // }
+
+    // for i := len(s) - 1; i >= 0; i--{
+    //     for j := len(p) - 1; 
+    // }
 }
