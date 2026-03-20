@@ -1,41 +1,39 @@
-import (
-    "math"
-)
-
 /*
--2 1 0 8 -1
+if all pos -> prod array
+if even neg -> prod array
+if odd neg -> ignore one neg 
 
-prefix = -2 -2 0 8 -8
-suffix =  -2 1 0 -8 -1
+[2, 3, -2, 4, -6, 5, 3, -1, 7]
+for each neg
+-> max(a[:2], a[3:]) 
+-> max(a[:4], a[5:])
+-> max(a[:7], a[8:])
 
-
+==> prod of prefixes or suffixes 
 */
 
 func maxProduct(nums []int) int {
-    maxProd := math.MinInt32
-    prefixProd := make([]int, len(nums))
-    suffixProd := make([]int, len(nums))
-    prev := 1
+    prefixProd := 1
+    suffixProd := 1
+    maxProd := nums[0]
 
-    for i := range nums {
-        prefixProd[i] = prev * nums[i]
-        prev = prefixProd[i]
-        if prefixProd[i] == 0{
-            prev = 1
+    for i := range nums{
+        if prefixProd == 0{
+            prefixProd = 1
         }
-        maxProd = max(maxProd, nums[i], prefixProd[i])
-    }
+        if suffixProd == 0{
+            suffixProd = 1
+        }
 
-    prev = 1
-    for i := len(nums) - 1; i >= 0; i--{
-        suffixProd[i] = prev * nums[i]
-        prev = suffixProd[i]
-        if suffixProd[i] == 0{
-            prev = 1
+        prefixProd *= nums[i]
+        suffixProd *= nums[len(nums) - 1 - i]
+
+        if prefixProd > maxProd && prefixProd >= suffixProd{
+            maxProd = prefixProd
+        } else if suffixProd > maxProd && suffixProd >= prefixProd{
+            maxProd = suffixProd
         }
-        maxProd = max(maxProd, nums[i], suffixProd[i])
     }
 
     return maxProd
-
 }
