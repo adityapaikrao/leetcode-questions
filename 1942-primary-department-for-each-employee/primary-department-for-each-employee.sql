@@ -7,5 +7,5 @@ OR a.employee_id IN (
     SELECT employee_id
     FROM Employee
     GROUP BY employee_id
-    HAVING COUNT(department_id) = 1
+    HAVING COUNT(*) = 1
 )
