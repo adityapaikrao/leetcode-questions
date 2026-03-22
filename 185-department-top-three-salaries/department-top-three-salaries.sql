@@ -1,5 +1,5 @@
 -- Write your PostgreSQL query statement below
-SELECT b.name AS Department, a.name as Employee, a.salary AS Salary
+SELECT b.name AS Department, a.name as Employee, a.salary
 FROM
 (
 SELECT name, salary, departmentId, DENSE_RANK() OVER (PARTITION BY departmentId ORDER BY salary DESC) AS rnk
