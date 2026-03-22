@@ -1,6 +1,6 @@
 -- Write your PostgreSQL query statement below
 WITH tiv_2015_counts AS (
-    SELECT DISTINCT tiv_2015
+    SELECT tiv_2015
     FROM Insurance
     GROUP BY tiv_2015
     HAVING COUNT(pid) > 1
