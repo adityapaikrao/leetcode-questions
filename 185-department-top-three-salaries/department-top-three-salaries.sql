@@ -7,4 +7,4 @@ FROM Employee
 ) a
 JOIN Department b
 ON a.departmentId = b.id
-AND a.rnk <= 3
+WHERE a.rnk <= 3
