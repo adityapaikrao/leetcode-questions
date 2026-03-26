@@ -31,18 +31,19 @@ func trap(height []int) int {
     water := 0
 
     for i <= j {
-        // fmt.Printf("i: %v j: %v lmax: %v rmax: %v\n", i, j, lmax, rmax)
         if lmax <= rmax{
             if lmax > height[i]{
                 water += lmax - height[i]
+            } else{
+                lmax = height[i]
             }
-            lmax = max(lmax, height[i])
             i++
         } else{
             if rmax > height[j]{
                 water += rmax - height[j]
+            } else {
+                rmax = height[j]
             }
-            rmax = max(rmax, height[j])
             j--
         }
     }
