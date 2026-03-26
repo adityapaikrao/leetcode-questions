@@ -1,24 +1,3 @@
-/*
-
-[0,1,0,2,1,0,1,3,2,1,2,1]
-   0 
-   i 
-                     j
- lmax = 0
- rmax = 1
- water = min(lmax, rmax) - height => 
-
- if lmax < rmax: 
-    can def store (lmax - height) water at i
-    i++
-    lmax: update
-else:
-    can def store (lmax - height) water at i
-    j++
-    rmax: update
-
-*/
-
 func trap(height []int) int {
     if len(height) <= 1 {
         return 0
