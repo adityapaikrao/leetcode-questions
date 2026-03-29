@@ -23,16 +23,12 @@ class Solution:
             left_sum, left_max = 0, solve(node.left)
             right_sum, right_max = 0, solve(node.right)
 
-            # print(f"At node {node.val}, left: {left_max}, right: {right_max}")
             if left_max > 0:
                 left_sum = left_max
             if right_max > 0:
                 right_sum = right_max
-            # print(left_sum, right_sum)
+
             max_sum = max(max_sum, 
-                        node.val,
-                        node.val + left_sum,
-                        node.val + right_sum,
                         node.val + left_sum + right_sum
                     )
 
