@@ -28,9 +28,7 @@ class Solution:
             if right_max > 0:
                 right_sum = right_max
 
-            max_sum = max(max_sum, 
-                        node.val + left_sum + right_sum
-                    )
+            max_sum = max(max_sum, node.val + left_sum + right_sum)
 
             return max(node.val + left_sum, node.val + right_sum)
         
