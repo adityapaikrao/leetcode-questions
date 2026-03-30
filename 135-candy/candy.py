@@ -1,12 +1,5 @@
 class Solution:
     def candy(self, ratings: List[int]) -> int:
-        """
-        1 3 5 7 2 1 1 4
-          
-        - - p p p d d d d d - - 
-                          i
-        1 1 2 3 4 1 2 3 4 5
-        """
         num_candies = 1
         i = 1
 
