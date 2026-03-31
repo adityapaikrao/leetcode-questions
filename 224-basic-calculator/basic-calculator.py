@@ -19,7 +19,6 @@ class Solution:
 
                 sign = stack.pop()
                 prev = stack.pop()
-                # print(res, sign, prev)
                 res = res * sign + prev
             elif s[i] == "+":
                 res += sign * num
