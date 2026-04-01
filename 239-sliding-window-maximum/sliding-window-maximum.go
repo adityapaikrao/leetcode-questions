@@ -1,16 +1,3 @@
-/*
-5 3 6 0 0 0
-            
-
-q = [6, 0, 0, 0]
-- remove out of window elems from queue front (need to store indices in the q)
-- remove smaller elems from the queue back
-- max is at q front
-
-5 
-max window: 
-*/
-
 func maxSlidingWindow(nums []int, k int) []int {
     q := make([]int, 0, k)
     maxWindow := make([]int, 0, len(nums) - k + 1)
