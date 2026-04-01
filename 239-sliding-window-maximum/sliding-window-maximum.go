@@ -4,11 +4,11 @@ func maxSlidingWindow(nums []int, k int) []int {
 
     for i := range nums {
         // remove out of window elems
-        for len(q) > 0 && q[0] <= i - k {
+        if len(q) > 0 && q[0] <= i - k {
             q = q[1:]
         }
         // remove smaller elems from q back
-        for len(q) > 0 && nums[q[len(q) - 1]] < nums[i] {
+        for len(q) > 0 && nums[q[len(q) - 1]] <= nums[i] {
             q = q[:len(q) - 1]
         }
 
