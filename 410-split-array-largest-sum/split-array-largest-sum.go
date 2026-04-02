@@ -1,3 +1,17 @@
+func canSplit(nums []int, maxSplit int, maxSum int) bool {
+    currSum := 0
+    k := 1
+    for _, num := range nums {
+        currSum += num
+        if currSum > maxSum{
+            currSum = num
+            k++
+        }
+    }
+
+    return k <= maxSplit
+}
+
 func splitArray(nums []int, k int) int {
     sum := 0
     maxVal := -1
@@ -11,23 +25,6 @@ func splitArray(nums []int, k int) int {
     
     if k == 1 {
         return sum
-    }
-
-    var canSplit func(nums []int, maxSplit int, maxSum int) bool 
-    canSplit = func(nums []int, maxSplit int, maxSum int) bool {
-        currSum := 0
-        k := 1
-
-        for _, num := range nums {
-            currSum += num
-            if currSum > maxSum{
-                currSum = num
-                k++
-            }
-        }
-
-        return k <= maxSplit
-
     }
 
     low := maxVal
