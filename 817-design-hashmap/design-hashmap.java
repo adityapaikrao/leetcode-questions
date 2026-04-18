@@ -1,22 +1,48 @@
 class MyHashMap {
 
-    int[] hashMap = new int[10000000];
+    List<int[]>[] arr;
+    int n=10000;
 
     public MyHashMap() {
-        Arrays.fill(hashMap,-1);
+        arr = new ArrayList[n];
+        for(int i=0;i<n;i++){
+            arr[i] = new ArrayList<>();
+        }
+        
     }
     
     public void put(int key, int value) {
-        hashMap[key] = value;
+
+        int idx = key%n;
+
+        for(int[] p: arr[idx]){
+            if(p[0]==key){
+                p[1]=value;
+                return;
+            }
+        }
+
+        arr[idx].add(new int[]{key,value});
+        
     }
     
     public int get(int key) {
-        return hashMap[key];
+
+        int idx = key%n;
+
+        for(int[] p:arr[idx]){
+            if(p[0]==key){
+                    return p[1];
+            }
+        }
+        return -1;
         
     }
     
     public void remove(int key) {
-        hashMap[key]=-1;
+
+        int idx=key%n;
+        arr[idx].removeIf(p->p[0]==key);
         
     }
 }
