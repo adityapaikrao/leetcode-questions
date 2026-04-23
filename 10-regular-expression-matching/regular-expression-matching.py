@@ -1,74 +1,62 @@
 class Solution:
     def isMatch(self, s: str, p: str) -> bool:
         """
-        Base Case:
-        if p empty & s not empty -> no match
-        if p empty & s empty -> match
-        if s empty & p not empty -> check remaining chars in p can be removed s: "ab" p: "abb*c*d*"
+        * -> 0 or more of preceeding
+        . -> any char
 
-        Recurrence:
-        if next char is *
-            -> delete curr char (i, j + 2)
-            -> extend curr char (i + 1, j) if matches s[i] or p[j] is "."
+        aa
+        i
+        a*
+        j
 
-            
+        aa
+        aa*c*d*
+        if next == *:
+            if curr not match: 
+                (i, j + 2)
+            else:
+                (i, j + 2) or (i + 1, j) or (i + 1, j + 2)
+        if curr == .:
+            (i + 1, j + 1)
+        else:
+            if curr not match: False
+            else: (i + 1, j + 1)
+
         """
-        def can_prune_pattern(pattern: str, idx: int) -> bool:
-            for i in range(len(p) - 1, idx - 1, -2):
-                if pattern[i] != "*":
-                    return False
+        memo = {}
 
+        def can_prune(pattern: str, j: int) -> bool:
+            for k in range(m - 1, j - 1, -2):
+                if pattern[k] != "*": return False
             return True
 
-        dp = [[False] * (len(p) + 1) for _ in range(len(s) + 1)]
-        dp[len(s)][len(p)] = True
+        n, m = len(s), len(p)
+        def solve(i: int, j: int) -> bool:
+            # Base Case
+            if i == n:
+                print(i, j)
+                return (j == m) or can_prune(p, j)
+            if j == m:
+                return False
+            
+            if (i, j) in memo: return memo[(i, j)] 
 
-        for j in range(len(p)):
-            dp[len(s)][j] = can_prune_pattern(p, j)
-
-        # print(dp[len(s)])
-
-        for i in range(len(s) - 1, -1, -1):
-            for j in range(len(p) - 1, -1, -1):
-                next_char = p[j + 1] if j + 1 < len(p) else ""
-                if next_char == "*":
-                    dp[i][j] = dp[i][j + 2] | ((s[i] == p[j] or p[j] == ".") and dp[i + 1][j])
+            # Recurrent Cases
+            next_char = p[j+1] if j + 1 < m else ""
+            if next_char == "*":
+                if s[i] != p[j] and p[j] != ".":
+                    memo[(i, j)] = solve(i, j + 2)
+                    return memo[(i, j)]
                 else:
-                    if p[j] == ".":
-                        dp[i][j] = dp[i + 1][j + 1]
-                    else:
-                        dp[i][j] = (s[i] == p[j]) and dp[i + 1][j + 1]
+                    memo[(i, j)] = solve(i, j + 2) or solve(i + 1, j)
+                    return memo[(i, j)]
+            if p[j] == ".":
+                memo[(i, j)] = solve(i + 1, j + 1)
+                return memo[(i, j)]
+            else:
+                memo[(i, j)] =  s[i] == p[j] and solve(i + 1, j + 1)
+                return memo[(i, j)]
         
-        return dp[0][0]
+        return solve(0, 0)
 
-
-        # def solve(i: int, j: int) -> bool:
-        #     # Base Cases
-        #     if j == len(p):
-        #         return i == len(s)
-        #     if i == len(s):
-        #         return can_prune_pattern(p, j)
-            
-        #     # Recurrence
-        #     next_char = p[j + 1] if j  + 1 < len(p) else ""
-        #     if next_char == "*":
-        #         # delete char
-        #         if solve(i, j + 2):
-        #             return True
-                
-        #         if (s[i] == p[j] or p[j] == ".") and solve(i + 1, j):
-        #             return True
-            
-        #         return False
         
-        #     if p[j] == ".":
-        #         if solve(i + 1, j + 1):
-        #             return True
-        #     else:
-        #         if s[i] == p[j] and solve(i + 1, j + 1):
-        #             return True
-            
-        #     return False
-        
-        # return solve(0, 0)
-
