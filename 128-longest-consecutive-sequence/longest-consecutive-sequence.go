@@ -8,7 +8,6 @@ func longestConsecutive(nums []int) int {
     for num := range set {
         if !set[num - 1] && set[num]{
             currLen := 1 
-            set[num] = false // dont process same number again
             for set[num + 1] {
                 currLen++
                 num++
