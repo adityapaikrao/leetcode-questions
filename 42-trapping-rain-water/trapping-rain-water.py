@@ -20,11 +20,11 @@ class Solution:
 
         while i <= j:
             if lmax <= rmax:
-                if lmax >= height[i]: water += lmax - height[i]  
+                if lmax > height[i]: water += lmax - height[i]  
                 else: lmax = height[i]
                 i += 1
             else:
-                if rmax >= height[j]: water += rmax - height[j]  
+                if rmax > height[j]: water += rmax - height[j]  
                 else: rmax = height[j]
                 j -= 1
         
