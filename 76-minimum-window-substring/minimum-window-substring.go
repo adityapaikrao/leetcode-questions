@@ -50,7 +50,7 @@ func minWindow(s string, t string) string {
             i++
         }
 
-        if j - i  + 1 < end - start + 1 {
+        if j - i + 2 < end - start + 1 {
             start = i - 1
             end = j
         } 
