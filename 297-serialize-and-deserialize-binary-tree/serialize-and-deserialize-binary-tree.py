@@ -5,6 +5,51 @@
 #         self.left = None
 #         self.right = None
 
+"""
+Serialization -> can be any tree-traversal algorithm
+                    - pre-order
+                    - in-order
+                    - post-order
+                    - dfs
+                    - bfs
+                -> should be uniquely de-serializable
+De-serialization -> build from serialized representation
+
+pre [1, 2, 3, 4, 5] S L R
+in  [2, 1, 4, 3, 5] L S R
+post [2, 4, 5, 3, 1] L R S 
+
+all of them are missing info about null childs -> serialise null nodes too
+
+pre [1, 2, N, N, 3, 4, N, N, 5, N, N] -> can be uniquely de-serialized
+                                i
+
+root = 5
+stack = []
+    
+if root not null:
+    if !root.left:
+        root.left = node
+        stack.append(node)
+        root = node
+        i++
+    else:
+        root.right = node
+        root = node
+        i++
+
+if root is null:
+    stack.pop.right = node
+    root = stack.pop
+    i++
+
+    1 
+  2       3
+N   N   4.  5
+       N N
+
+"""
+
 class Codec:
 
     def serialize(self, root):
@@ -13,22 +58,23 @@ class Codec:
         :type root: TreeNode
         :rtype: str
         """
-        nodes = []
-        def preorder(node):
-            if not node:
-                nodes.append("N")
-                return
-            
-            nodes.append(str(node.val))
-            preorder(node.left)
-            preorder(node.right)
+        preorder = []
+        stack = [root]
 
-            # print(node.val, nodes)
-            return
-        preorder(root)
-        # print("S:", nodes)
-        return ",".join(nodes)
+        while stack:
+            node = stack.pop()
+            if node: preorder.append(str(node.val))
+            else: 
+                preorder.append("N")
+                continue
+
+            if node.right: stack.append(node.right)
+            else: stack.append(None)
+
+            if node.left: stack.append(node.left)
+            else: stack.append(None)
         
+        return "#".join(preorder)
 
     def deserialize(self, data):
         """Decodes your encoded data to tree.
@@ -36,28 +82,33 @@ class Codec:
         :type data: str
         :rtype: TreeNode
         """
-        if not data or data == ",":
-            return None
-        # print("R:", data)
-        data = data.split(",")
-        index = 0
+        if not data: return None
+
+        preorder = data.split("#")
+        i = 0
+
         def build_tree():
-            nonlocal index
-            if data[index] == "N":
-                index += 1
+            nonlocal i
+            if i >= len(preorder):
                 return None
             
-            curr_node = TreeNode(data[index])
-            index += 1
-
-            curr_node.left = build_tree()
-            curr_node.right = build_tree()
+            if preorder[i] == "N":
+                i += 1
+                return None
             
-            return curr_node
+            root = TreeNode(int(preorder[i]))
+            i += 1
+            root.left = build_tree()
+            root.right = build_tree()
+
+            return root
         
         return build_tree()
+            
+            
 
-        
+
+
 
 # Your Codec object will be instantiated and called as such:
 # ser = Codec()
