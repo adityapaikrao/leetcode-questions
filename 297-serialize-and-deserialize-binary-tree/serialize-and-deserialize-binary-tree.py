@@ -61,19 +61,18 @@ class Codec:
         preorder = []
         stack = [root]
 
-        while stack:
-            node = stack.pop()
-            if node: preorder.append(str(node.val))
-            else: 
+        def pre_order_traversal(node: Optional[TreeNode]):
+            if not node:
                 preorder.append("N")
-                continue
+                return 
+            
+            preorder.append(str(node.val))
+            pre_order_traversal(node.left)
+            pre_order_traversal(node.right)
 
-            if node.right: stack.append(node.right)
-            else: stack.append(None)
-
-            if node.left: stack.append(node.left)
-            else: stack.append(None)
+            return
         
+        pre_order_traversal(root)
         return "#".join(preorder)
 
     def deserialize(self, data):
