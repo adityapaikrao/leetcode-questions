@@ -17,7 +17,6 @@ class Solution:
                 _, task = heapq.heappop(blocked_tasks)
                 heapq.heappush(ready_tasks, (-counts[task], task))
             
-            # print(time, ready_tasks, blocked_tasks, counts)
             if ready_tasks:
                 _, task = heapq.heappop(ready_tasks)
                 counts[task] -= 1
