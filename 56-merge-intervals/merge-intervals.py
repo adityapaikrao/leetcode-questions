@@ -13,7 +13,7 @@ class Solution:
         if len(intervals) == 1:
             return intervals
 
-        intervals.sort()
+        intervals.sort(key = lambda x : x[0])
         prev = 0
         for i in range(1, len(intervals)):
             if intervals[prev][1] >= intervals[i][0]:
