@@ -30,8 +30,8 @@ class Solution:
                 spiral_order.append(matrix[bottom][j])
             bottom -= 1
 
-            if top > bottom:
-                break
+            # if top > bottom:
+            #     break
 
             # go up
             for i in range(bottom, top - 1, -1):
