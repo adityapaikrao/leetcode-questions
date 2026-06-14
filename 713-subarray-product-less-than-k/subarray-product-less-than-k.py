@@ -25,7 +25,7 @@ class Solution:
                 count += (j - i + 1)
                 continue
             
-            while i <= j and curr_prod >= k:
+            while i <=j and curr_prod >= k:
                 curr_prod = curr_prod // nums[i]
                 i += 1
             if i <= j: count += (j - i + 1)
