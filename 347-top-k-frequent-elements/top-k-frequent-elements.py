@@ -12,15 +12,27 @@ class Solution:
         min heap -> (counts, num) 
         maintain heap size at most k: pop elements when size goes beyond k 
         N - k lowest elements removed => top k in heap
+
+        freq of each number: 1 to N
+        have buckets of freq -> 
+        put each number in bucket corresponding to its freq
+        traverse from behind until we have k elems
+
         """
-        # get frequencies
         counts = defaultdict(int)
         for num in nums:
             counts[num] += 1
         
-        min_heap = [] # (count, num)
+        buckets = [[] for _ in range(len(nums) + 1)]
         for num, freq in counts.items():
-            heapq.heappush(min_heap, (freq, num))
-            if len(min_heap) > k: heapq.heappop(min_heap)
+            buckets[freq].append(num)
         
-        return [num for _, num in min_heap]
+        top_k = []
+        for i in range(len(buckets) - 1, -1, -1):
+            top_k.extend(buckets[i])
+            if len(top_k) >= k: break
+        
+        return top_k[:k]
+        
+
+
