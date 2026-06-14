@@ -20,6 +20,6 @@ class Solution:
                 intervals[prev][1] = max(intervals[prev][1], intervals[i][1]) 
             else:
                 prev += 1
-                intervals[prev], intervals[i] = intervals[i], intervals[prev]
+                if prev != i: intervals[prev], intervals[i] = intervals[i], intervals[prev]
 
         return intervals[:prev + 1] 
