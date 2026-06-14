@@ -29,10 +29,7 @@ class Solution:
             for j in range(right, left - 1, -1):
                 spiral_order.append(matrix[bottom][j])
             bottom -= 1
-
-            # if top > bottom:
-            #     break
-
+            
             # go up
             for i in range(bottom, top - 1, -1):
                 spiral_order.append(matrix[i][left])
