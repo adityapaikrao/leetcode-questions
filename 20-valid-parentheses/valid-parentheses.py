@@ -19,8 +19,7 @@ class Solution:
                 stack.append(char)
                 continue
             
-            if not stack or stack[-1] != bracket_map[char]:
+            if not stack or stack.pop() != bracket_map[char]:
                 return False
-            stack.pop()
         
         return len(stack) == 0
