@@ -2,15 +2,30 @@ class Solution:
     def maxProfit(self, prices: List[int]) -> int:
         """
         7, 1, 5, 3, 6, 4
-        
-        2 - 1 + 3 - 2 = 3 - 1
+        b
+        s
         """
-        prev = float('inf')
-        profit = 0
+        memo = {}
+        def get_profit(index: int, can_buy: bool) -> int:
+            # check memo
+            if (index, can_buy) in memo:
+                return memo[(index, can_buy)]
 
-        for num in prices:
-            if num > prev:
-                profit += num - prev
-            prev = num
+            # Base Case
+            if index >= len(prices):
+                return 0
+            
+            # Recurse
+            if can_buy:
+                profit = max(-prices[index] + get_profit(index + 1, False), 
+                    get_profit(index + 1, True))
+            else:
+                profit = max(prices[index] + get_profit(index + 1, True), 
+                get_profit(index + 1, False))
+            
+            memo[(index, can_buy)] = profit
+            return profit
         
-        return profit
+        return get_profit(0, True)
+            
+
