@@ -5,7 +5,11 @@ class SnapshotArray:
         self._indexes = [[] for _ in range(length)]
         self._snap_id = 0
 
+        # SC: O(length + N)
+
     def set(self, index: int, val: int) -> None:
+        if self._indexes[index] and self._indexes[index][-1][0] == self._snap_id:
+            self._indexes[index].pop()
         self._indexes[index].append((self._snap_id, val))
         return
 
@@ -17,6 +21,7 @@ class SnapshotArray:
         val = 0
         l, r = 0, len(self._indexes[index]) - 1
 
+        # O(log N) N = number of changes made to index / set operations on index
         while l <= r:
             mid = (l + r) // 2
             if self._indexes[index][mid][0] > snap_id:
