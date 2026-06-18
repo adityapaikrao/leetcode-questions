@@ -4,19 +4,8 @@ class Solution:
         Do not return anything, modify nums in-place instead.
         """
         """
-        1 1 2 0 2 1
-
-        0 1 1 1 2 2
-        l
-              i
-                r
-        if r== 2: r--
-            swap i & r
-            i ++
-        
-        if l==0: l++
-            swap i & l
-            l ++
+        2 0 1
+        l   r
         """
         l = 0
         r = len(nums) - 1
@@ -27,7 +16,6 @@ class Solution:
                 while l < i and nums[l] == 0:
                     l += 1
                 nums[l], nums[i] = nums[i], nums[l]
-                # if nums[i] == 2: continue
             
             elif nums[i] == 2:
                 while r > i and nums[r] == 2:
