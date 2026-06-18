@@ -20,9 +20,8 @@ class Solution:
                 if curr.right:
                     q.append((curr.right, col_index + 1))
             
-            for index, node_vals in curr_order.items():
-                node_vals.sort()
-                order[index].extend(node_vals)
+            for index in curr_order:
+                order[index].extend(sorted(curr_order[index]))
         
         traversal = []
         for key in sorted(order.keys()):
