@@ -1,50 +1,32 @@
-class Node:
-    def __init__(self):
-        self.links = [None] * 26
-        self.is_end = False
-    
-    def isEnd(self) -> bool:
-        return self.is_end
-    
-    def setEnd(self):
-        self.is_end = True
-    
-    def hasChar(self, char: str) -> bool:
-        return (self.links[ord(char) - ord('a')] is not None)
-    
-    def addChar(self, char: str):
-        self.links[ord(char) - ord('a')] = Node()
-    
-    def getCharNode(self, char: str) -> Optional[Node]:
-        if not self.hasChar(char): return None
-        return self.links[ord(char) - ord('a')]
-
 class Trie:
 
     def __init__(self):
-        self._root = Node()        
+        self.root = {}
 
     def insert(self, word: str) -> None:
-        node = self._root
+        node = self.root
         for char in word:
-            if not node.hasChar(char):
-                node.addChar(char)
-            node = node.getCharNode(char)
-
-        node.setEnd()
+            if char not in node:
+                node[char] = {}
+            node = node[char]
+        node["#"] = True
 
     def search(self, word: str) -> bool:
-        node = self._root
+        node = self.root
         for char in word:
-            if not node.hasChar(char): return False
-            node = node.getCharNode(char)
-        return node.isEnd()
+            if char not in node:
+                return False
+            node = node[char]
+        
+        return "#" in node
 
     def startsWith(self, prefix: str) -> bool:
-        node = self._root
+        node = self.root
         for char in prefix:
-            if not node.hasChar(char): return False
-            node = node.getCharNode(char)
+            if char not in node:
+                return False
+            node = node[char]
+        
         return True
 
 
