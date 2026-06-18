@@ -25,7 +25,7 @@ class Solution:
                 order[index].extend(node_vals)
         
         traversal = []
-        for key, values in sorted(zip(order.keys(), order.values())):
-            traversal.append(values)
+        for key in sorted(order.keys()):
+            traversal.append(order[key])
         
         return traversal
