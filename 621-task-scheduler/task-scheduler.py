@@ -1,30 +1,27 @@
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
-        ready_tasks = [] # max heap of process at (count, task)
-        blocked_tasks = [] # min heap of blocked tasks (time, task)
-
-        counts = defaultdict(int)
+        counts = {}
         for task in tasks:
-            counts[task] += 1
+            counts[task] = counts.get(task, 0) + 1
         
-        for task, count in counts.items():
-            heapq.heappush(ready_tasks, (-count, task))
-        
+        task_counts = [-val for val in counts.values()]
+        heapq.heapify(task_counts)
         time = 0
-        while blocked_tasks or ready_tasks:
-            # check if new tasks are available now
-            while blocked_tasks and blocked_tasks[0][0] <= time:
-                _, task = heapq.heappop(blocked_tasks)
-                heapq.heappush(ready_tasks, (-counts[task], task))
-            
-            if ready_tasks:
-                _, task = heapq.heappop(ready_tasks)
-                counts[task] -= 1
-                if counts[task] > 0:
-                    heapq.heappush(blocked_tasks, (time + n + 1, task))
-
-            time += 1
         
+        while task_counts:
+            temp = []
+            curr_tasks = 0
+            for _ in range(n + 1):
+                if not task_counts:
+                    break
+                count = heapq.heappop(task_counts)
+                count += 1
+                if count < 0: temp.append(count)
+                curr_tasks += 1
+            
+            while temp:
+                heapq.heappush(task_counts, temp.pop())
+
+            time += n + 1 if task_counts else curr_tasks
         return time
 
-            
