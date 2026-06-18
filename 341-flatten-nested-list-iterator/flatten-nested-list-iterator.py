@@ -25,7 +25,7 @@ class NestedIterator:
         self.stack = [[nestedList, 0]] # (nestedList, index) index is the index of elem         currently considered in this list
     
     def next(self) -> int:
-        self.hasNext()
+        # self.hasNext()
         last, index = self.stack[-1]
         self.stack[-1][1] += 1
         return last[index].getInteger()
