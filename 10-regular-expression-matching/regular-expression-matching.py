@@ -1,62 +1,62 @@
 class Solution:
     def isMatch(self, s: str, p: str) -> bool:
         """
-        * -> 0 or more of preceeding
         . -> any char
+        * -> zero or more of preceeding elem
 
-        aa
-        i
-        a*
+        .* -> matches anything
+
+        a a a
+        i 
+        . * 
         j
 
-        aa
-        aa*c*d*
-        if next == *:
-            if curr not match: 
-                (i, j + 2)
+        if p[j + 1] == "*":
+            if p[j] != s[i] and p[j] != '.' : (i, j + 2)
             else:
-                (i, j + 2) or (i + 1, j) or (i + 1, j + 2)
-        if curr == .:
+                (i, j + 2) or (i + 1, j) 
+        if p[j] == s[i] or p[j] == '.':
             (i + 1, j + 1)
         else:
-            if curr not match: False
-            else: (i + 1, j + 1)
-
+            false
+        c
+        i
+        c * d * e *
+        j
+                    
         """
+        pattern_matches = [False] * (len(p) + 1)
+        pattern_matches[-1] = True
+
         memo = {}
+        for k in range(len(p) -1, -1, -2):
+            if p[k] != "*": break
+            pattern_matches[k-1] = True
 
-        def can_prune(pattern: str, j: int) -> bool:
-            for k in range(m - 1, j - 1, -2):
-                if pattern[k] != "*": return False
-            return True
-
-        n, m = len(s), len(p)
-        def solve(i: int, j: int) -> bool:
+        def check(i: int, j: int) -> bool:
+            if (i, j) in memo:
+                return memo[(i, j)]
             # Base Case
-            if i == n:
-                print(i, j)
-                return (j == m) or can_prune(p, j)
-            if j == m:
+            if i < len(s) and j >= len(p):
                 return False
+            if i == len(s):
+                return pattern_matches[j]
             
-            if (i, j) in memo: return memo[(i, j)] 
-
-            # Recurrent Cases
-            next_char = p[j+1] if j + 1 < m else ""
+            next_char = p[j + 1] if j + 1 < len(p) else ""
             if next_char == "*":
-                if s[i] != p[j] and p[j] != ".":
-                    memo[(i, j)] = solve(i, j + 2)
+                if p[j] != s[i] and p[j] != ".":
+                    memo[(i, j)] = check(i, j + 2)
                     return memo[(i, j)]
                 else:
-                    memo[(i, j)] = solve(i, j + 2) or solve(i + 1, j)
-                    return memo[(i, j)]
-            if p[j] == ".":
-                memo[(i, j)] = solve(i + 1, j + 1)
-                return memo[(i, j)]
-            else:
-                memo[(i, j)] =  s[i] == p[j] and solve(i + 1, j + 1)
-                return memo[(i, j)]
+                    memo[(i, j)] = check(i, j + 2) or check(i + 1, j)
+                    return check(i, j + 2) or check(i + 1, j)
+            
+            elif p[j] == "." or s[i] == p[j]:
+                memo[(i, j)] = check(i + 1, j + 1)
+                return check(i + 1, j + 1)
+            
+            memo[(i, j)] = False
+            return False
         
-        return solve(0, 0)
+        return check(0, 0)
 
-        
