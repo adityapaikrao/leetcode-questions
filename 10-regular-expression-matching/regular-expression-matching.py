@@ -49,14 +49,14 @@ class Solution:
                     return memo[(i, j)]
                 else:
                     memo[(i, j)] = check(i, j + 2) or check(i + 1, j)
-                    return check(i, j + 2) or check(i + 1, j)
+                    return memo[(i, j)]
             
             elif p[j] == "." or s[i] == p[j]:
                 memo[(i, j)] = check(i + 1, j + 1)
-                return check(i + 1, j + 1)
+                return memo[(i, j)]
             
             memo[(i, j)] = False
-            return False
+            return memo[(i, j)]
         
         return check(0, 0)
 
