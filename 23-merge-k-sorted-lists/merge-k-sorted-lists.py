@@ -28,11 +28,17 @@ class Solution:
             next_node = node.next 
             push next_node in heap
 
+        K lists
+        O(N * logK)
+        TC: O(k)
         """
+        if not lists:
+            return None
         heap = [] # (node.val, idx, node)
         for idx, head in enumerate(lists):
             if head:
-                heapq.heappush(heap, (head.val, idx, head))
+                heap.append((head.val, idx, head))
+        heapq.heapify(heap)
         
         dummy = ListNode()
         itr = dummy
