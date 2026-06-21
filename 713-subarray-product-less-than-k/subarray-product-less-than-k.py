@@ -8,7 +8,7 @@ class Solution:
             curr_prod *= nums[j]
 
             while i <= j and curr_prod >= k:
-                curr_prod = curr_prod / nums[i]
+                curr_prod = curr_prod // nums[i]
                 i += 1
             
             num += (j - i + 1)
