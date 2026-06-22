@@ -1,15 +1,16 @@
-
 class Solution:
     def reverse(self, x: int) -> int:
         rev = 0
-        original = x
+        sign = -1 if x < 0 else 1
+        x = abs(x)
+        max_int = (1 << 31) - 1
 
-        while x != 0:
-            digit = -x % 10 if x < 0 else x % 10
-            rev = rev * 10 + int(digit)
+        while x:
+            digit = x % 10
+            if rev > max_int // 10 or (rev == max_int // 10 and digit > 7):
+                return 0
+            rev = rev * 10 + digit
+            x //= 10
 
-            x = int(x / 10)
-        if rev > (1 << 31) - 1 or rev < -(1<<31):
-            return 0
-        return rev if original > 0 else -rev
-    
+        rev *= sign
+        return rev if -(1 << 31) <= rev <= max_int else 0
