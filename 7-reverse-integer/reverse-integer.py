@@ -5,12 +5,14 @@ class Solution:
         x = abs(x)
         max_int = (1 << 31) - 1
 
-        while x:
+        while x > 0:
             digit = x % 10
+
             if rev > max_int // 10 or (rev == max_int // 10 and digit > 7):
                 return 0
             rev = rev * 10 + digit
+            
             x //= 10
-
+        
         rev *= sign
         return rev if -(1 << 31) <= rev <= max_int else 0
