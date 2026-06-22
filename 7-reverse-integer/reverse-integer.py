@@ -1,25 +1,15 @@
+
 class Solution:
     def reverse(self, x: int) -> int:
-        """
-        12 
-        1 1 0 0 
+        rev = 0
+        original = x
 
-        21
-        1 0 1 0 1
-        """
-        sign = 1
-        if x < 0:
-            x *= -1
-            sign = -1
-        
-        num = 0
-        while x > 0:
-            num = num * 10 + (x % 10)
-            x = x // 10
-            # print(num, x)
-        
-        if sign == -1:
-            return 0 if num > (1 << 31) else num * sign
-        else:
-            return 0 if num > (1 << 31) - 1 else num
-        
+        while x != 0:
+            digit = -x % 10 if x < 0 else x % 10
+            rev = rev * 10 + int(digit)
+
+            x = int(x / 10)
+        if rev > (1 << 31) - 1 or rev < -(1<<31):
+            return 0
+        return rev if original > 0 else -rev
+    
