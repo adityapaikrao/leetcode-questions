@@ -1,43 +1,63 @@
+from collections import defaultdict
+import heapq
+
 class Solution:
     def busiestServers(self, k: int, arrival: List[int], load: List[int]) -> List[int]:
         """
-        counts = {} # server -> req count
+        k servers
+        for ith request -> (i % k) th server or next available server (circular wrapping)
 
-        [0, 0, 0] # end_times of current load
+        (arrival_time, request_load)_i 
+        arrival_time_i < arrival_time_j for all i < j
 
-        - request arrives:
-            i = i % k
-            j = i
-            traverse until jth server free: assign to that
-            increase count
-         
+        find busiest server
+
+        map: server_counts = {}
+        end_times for servers: List / heap
+
+        [(1, 5), (2, 2), (3, 3), (4, 3), (5, 3)]
+                                   i
+
+        end_times: [5, 4, 6] 
+        available: []
+        map: [1, 1, 1]
+
+        request comes in (a, l):
+            update available servers:
+                - if a >= end_time: put into available servers
+                - push flag based on how far available srver is from current's pref
+                    - curr + (avail - curr + k) % k
+                     0 + (1 - 0) % 3 => 1
+                     5 + (1 - 5) % 3 => 5 + 2 => 7 7 % 3 => 1
+
+
+            check if (i % k)th server available
+            update end time to a + l
+
+            if available servers:
+                pop from top & recover orginal index by %k
+
         """
-        n = len(arrival)
+        available = [i for i in range(k)]
+        end_times = [] # (time, server_idx)
+        counts = [0] * k
+        heapq.heapify(available)
 
-        server_counts = [0] * k
-        busy_servers = [] # min heap of end times (end_times, server)
-        free_servers = list(range(k)) # min heap of free servers
-        heapq.heapify(free_servers)
+        for index, request in enumerate(zip(arrival, load)):
+            preferred = index % k
+            # print(end_times, available)
 
-        for curr_server, (arrival_time, load_time) in enumerate(zip(arrival, load)):
-            # free up servers that can be used now
-            while busy_servers and busy_servers[0][0] <= arrival_time:
-                _, free_server = heapq.heappop(busy_servers)
-                # push into free based on how far the freed server is from current request's preferred
-                heapq.heappush(free_servers, (curr_server + (free_server - curr_server + k) % k))
+            while end_times and end_times[0][0] <= request[0]:
+                _, new_server = heapq.heappop(end_times)
+                new_idx = index + (new_server - index) % k
+                heapq.heappush(available, new_idx)
             
-            if free_servers:
-                circular_index = heapq.heappop(free_servers)
-                server_id = circular_index % k
-
-                server_counts[server_id] += 1
-                heapq.heappush(busy_servers, (arrival_time + load_time, server_id))
-            
-        max_requests = max(server_counts)
-        return [index for index, counts in enumerate(server_counts) if counts == max_requests]
-
-            
-
-
-
+            if available:
+                server_idx = heapq.heappop(available) % k
+                counts[server_idx] += 1
                 
+                # update end time for new task
+                heapq.heappush(end_times, (request[0] + request[1], server_idx))
+        # print(counts)
+        max_count = max(counts)
+        return [server_idx for server_idx, count in enumerate(counts) if count == max_count]
