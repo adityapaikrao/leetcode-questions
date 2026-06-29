@@ -1,5 +1,10 @@
 class Solution:
     def reverse(self, x: int) -> int:
+        MIN_INT = -(1 << 31)
+        if x == MIN_INT:
+            # cannot negate to -x within 32 bit bound
+            return 0
+        
         sign = 1 
         if x < 0:
             x = -x
@@ -10,12 +15,11 @@ class Solution:
 
         while x:
             digit = int(x % 10)
-            
-            if rev > MAX_INT // 10 or (rev == MAX_INT // 10 and digit == 7):
+            if rev > MAX_INT // 10 or (rev == MAX_INT // 10 and digit > 7):
                 return 0
             
             rev = rev * 10 + digit
             x //= 10
         
         rev *= sign
-        return rev if -(1 << 31) <= rev <= MAX_INT else 0
+        return rev if MIN_INT <= rev <= MAX_INT else 0
