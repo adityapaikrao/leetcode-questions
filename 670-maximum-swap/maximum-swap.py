@@ -12,14 +12,14 @@ class Solution:
         curr_max = len(digits) - 1
 
         for i in range(len(digits) - 1, -1, -1):
-            if int(digits[i]) > int(digits[curr_max]):
+            if digits[i] > digits[curr_max]:
                 curr_max = i
+                continue
             
-            if digits[curr_max] > digits[i]:
-                digits[curr_max], digits[i] = digits[i], digits[curr_max]
-                new_num = int("".join(digits))
-                max_num = max(max_num, new_num)
-                digits[curr_max], digits[i] = digits[i], digits[curr_max]
+            digits[curr_max], digits[i] = digits[i], digits[curr_max]
+            new_num = int("".join(digits))
+            max_num = max(max_num, new_num)
+            digits[curr_max], digits[i] = digits[i], digits[curr_max]
     
         return max_num
 
