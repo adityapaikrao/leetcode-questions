@@ -8,26 +8,18 @@ class Solution:
 
         """
         digits = list(str(num))
-
-        max_right = []
+        max_num = num
         curr_max = len(digits) - 1
+
         for i in range(len(digits) - 1, -1, -1):
             if int(digits[i]) > int(digits[curr_max]):
-                max_right.append(i)
                 curr_max = i
-            else:
-                max_right.append(curr_max)
-        
-        max_right.reverse()
-        
-        max_num = num
-        for i in range(len(digits)):
-            right = int(digits[max_right[i]])
-            if right > int(digits[i]):
-                digits[i], digits[max_right[i]] = digits[max_right[i]], digits[i]
+            
+            if digits[curr_max] > digits[i]:
+                digits[curr_max], digits[i] = digits[i], digits[curr_max]
                 new_num = int("".join(digits))
                 max_num = max(max_num, new_num)
-                digits[i], digits[max_right[i]] = digits[max_right[i]], digits[i]
-        
+                digits[curr_max], digits[i] = digits[i], digits[curr_max]
+    
         return max_num
 
