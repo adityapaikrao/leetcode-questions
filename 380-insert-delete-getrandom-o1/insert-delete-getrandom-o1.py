@@ -1,49 +1,35 @@
-"""
-[1, 2, 5, 4, 3]
-
-[3]
-
-map = {1: 0, 2: 1, 5:2, 4:3, 3:4}
-
-- get lookup index in arr in the map
-- insert add to elem update entry in map
-- remove swap elem to the end; pop from array & del key in map
-
-"""
-import random
+from typing import List, Dict
 
 class RandomizedSet:
-
     def __init__(self):
-        self.elems = []
-        self.map = {}
+        self.vals: List[int] = []
+        self.map: Dict[int, int] = {} # val -> index in vals 
 
     def insert(self, val: int) -> bool:
         if val in self.map:
             return False
-        self.elems.append(val)
-        self.map[val] = len(self.elems) - 1
+
+        self.vals.append(val)
+        self.map[val] = len(self.vals) - 1
         return True
 
     def remove(self, val: int) -> bool:
         if val not in self.map:
             return False
-        index = self.map[val]
-        # swap to end & pop & delete key in map O(1)
-        self.elems[index], self.elems[-1] = self.elems[-1], self.elems[index]
-        self.elems.pop()
+        
+        popped_idx = self.map[val]
+        # swap to end of array & pop
+        self.vals[popped_idx], self.vals[-1] = self.vals[-1], self.vals[popped_idx]
+        self.vals.pop()
+
+        # update position of swapped elem
         del self.map[val]
-
-        # update index for the swapped elem O(1)
-        if index < len(self.elems):
-            swapped = self.elems[index]
-            self.map[swapped] = index
+        if popped_idx < len(self.vals):
+            self.map[self.vals[popped_idx]] = popped_idx
         return True
-
-
+        
     def getRandom(self) -> int:
-        index = random.randint(0, len(self.elems) - 1)
-        return self.elems[index]
+        return random.choice(self.vals)
 
 
 # Your RandomizedSet object will be instantiated and called as such:
