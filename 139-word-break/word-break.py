@@ -30,7 +30,7 @@ class Solution:
 
         for i in range(len(s) - 1, -1, -1):
             for j in range(i, len(s)):
-                if s[i: j + 1] in word_set:
-                    dp[i] |= dp[j + 1]
-                    # break
+                if s[i: j + 1] in word_set and dp[j + 1]:
+                    dp[i] = True
+                    break
         return dp[0]
