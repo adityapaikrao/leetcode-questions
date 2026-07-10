@@ -28,20 +28,42 @@ recurse on [2, 3]
 
 class NestedIterator:
     def __init__(self, nestedList: [NestedInteger]):
-        self.flattened = deque()
-        def flatten(nested_list: [NestedInteger]):
-            for nested_int in nested_list:
-                if nested_int.isInteger():
-                    self.flattened.append(nested_int.getInteger())
-                else:
-                    flatten(nested_int.getList())
-        flatten(nestedList)
+        # self.flattened = deque()
+        # def flatten(nested_list: [NestedInteger]):
+        #     for nested_int in nested_list:
+        #         if nested_int.isInteger():
+        #             self.flattened.append(nested_int.getInteger())
+        #         else:
+        #             flatten(nested_int.getList())
+        # flatten(nestedList)
+ 
+        self.stack = [(nestedList, 0)] # stores (nestedList, index)
 
     def next(self) -> int:
-        return self.flattened.popleft()
-    
+        lastList, idx = self.stack[-1]
+        self.stack[-1] = (lastList, idx + 1)
+        return lastList[idx].getInteger()
+
+    """
+    [[]]
+    stack = []
+
+    """
     def hasNext(self) -> bool:
-         return len(self.flattened) > 0
+        while self.stack:
+            currList, idx = self.stack[-1]
+            if idx == len(currList):
+                self.stack.pop()
+                continue
+    
+            if currList[idx].isInteger():
+                return True
+            else:
+                nextList = currList[idx].getList()
+                self.stack[-1] = (currList, idx + 1)
+                self.stack.append((nextList, 0))
+
+        return False
 
 # Your NestedIterator object will be instantiated and called as such:
 # i, v = NestedIterator(nestedList), []
