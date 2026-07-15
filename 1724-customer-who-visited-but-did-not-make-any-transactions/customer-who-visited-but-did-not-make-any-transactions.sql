@@ -1,5 +1,5 @@
 -- Write your PostgreSQL query statement below
-SELECT a.customer_id, count(a.customer_id) AS count_no_trans
+SELECT a.customer_id, count(*) AS count_no_trans
 FROM Visits a 
 LEFT JOIN Transactions b
 ON a.visit_id = b.visit_id
