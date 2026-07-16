@@ -1,15 +1,19 @@
 -- Write your PostgreSQL query statement below
-SELECT person_name
-FROM
-(SELECT person_id, person_name,
-    SUM(weight) OVER (ORDER BY turn ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_wt
-FROM Queue 
--- GROUP BY q.person_id, person_name
+WITH cum_weights AS (
+    SELECT person_id,
+    person_name,
+    SUM(weight) OVER (
+        ORDER BY turn ASC
+        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ) AS cum_weight
+    FROM Queue
 )
-WHERE running_wt <= 1000 
-ORDER BY running_wt DESC
-LIMIT 1
 
--- SELECT person_id, person_name,
---     SUM(weight) OVER (ORDER BY turn) AS running_wt
--- FROM Queue 
+-- SELECT * 
+-- FROM cum_weights
+
+SELECT person_name
+FROM cum_weights
+WHERE cum_weight <= 1000
+ORDER BY cum_weight DESC
+LIMIT 1 
