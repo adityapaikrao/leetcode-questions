@@ -1,10 +1,11 @@
 -- Write your PostgreSQL query statement below
-SELECT b.name AS Department, a.name as Employee, a.salary
-FROM
-(
-SELECT name, salary, departmentId, DENSE_RANK() OVER (PARTITION BY departmentId ORDER BY salary DESC) AS rnk
-FROM Employee
-) a
-JOIN Department b
-ON a.departmentId = b.id
-WHERE a.rnk <= 3
+WITH ranked_employees AS (
+SELECT e.departmentId, e.name, e.salary, DENSE_RANK() OVER (PARTITION BY e.departmentId ORDER BY e.salary DESC) AS rnk
+FROM Employee e 
+)
+
+SELECT d.name as department, r.name as employee, salary
+FROM Department d
+JOIN ranked_employees r 
+ON d.id = r.departmentId
+WHERE rnk <= 3
