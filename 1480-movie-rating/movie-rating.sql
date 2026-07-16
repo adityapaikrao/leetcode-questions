@@ -13,7 +13,7 @@ highest_avg_movie AS (
     FROM MovieRating mr
     JOIN Movies m
     ON mr.movie_id = m.movie_id
-    WHERE EXTRACT(MONTH FROM mr.created_at) = '02' AND EXTRACT(YEAR FROM mr.created_at) = '2020'
+    WHERE TO_CHAR(mr.created_at, 'YYYY-MM') = '2020-02'
     GROUP BY mr.movie_id, m.title
     ORDER BY avg_rating DESC, m.title ASC
     LIMIT 1
