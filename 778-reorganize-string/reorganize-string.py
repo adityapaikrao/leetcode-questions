@@ -1,11 +1,5 @@
 class Solution:
     def reorganizeString(self, s: str) -> str:
-        """
-        a a b 
-        
-        max freq <= len // 2 
-        
-        """
         if not s: 
             return ""
         n = len(s)
@@ -17,7 +11,7 @@ class Solution:
             if freq[char] > maxFreq: 
                 maxFreq = freq[char]
                 maxChar = char
-        
+        if maxFreq == 1: return s
         if maxFreq > (n + 1) // 2:
             return ""
         
