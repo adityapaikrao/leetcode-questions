@@ -8,14 +8,19 @@ class Solution:
         if n == 1:
             return x
         
+        isIntMin = False
         if n < 0:
             x = 1 / x
+            if n == -(1 << 32):
+                isIntMin = True
+                n += 1
             n  = -n
         exp = self.myPow(x, n // 2)
+        mult = 1 / x if isIntMin else 1
         if n % 2 == 1:
-            return x * exp * exp
+            return x * exp * exp * mult
         else:
-            return exp * exp
+            return exp * exp * mult
     
 
         
