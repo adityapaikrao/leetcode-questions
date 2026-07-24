@@ -1,31 +1,29 @@
 class Solution:
     def trap(self, height: List[int]) -> int:
         """
-        lmax 0
-        rmax 1
+        4 2 0 3 6 5
+        0 2 4 1 0 0
+                  l
+                r
+        lmax = 4
+        rmax = 5
+        each bar can only trap min(lmax, rmax) - itself
 
-        0,1,0,2,1,0,1,3,2,1,2,1
-          i
-                            j
-
-        if lmax <= rmax: water += lmax - height[i]; i++; lmax = max(lmax, hieght[i])
 
         """
-        lmax = height[0]
-        rmax = height[-1]
-
-        i = 1
-        j = len(height) - 2
+        lmax, rmax = height[0], height[-1]
+        l, r = 0, len(height) - 1
         water = 0
 
-        while i <= j:
+        while l <= r:
             if lmax <= rmax:
-                if lmax > height[i]: water += lmax - height[i]  
-                else: lmax = height[i]
-                i += 1
+                water += max(lmax - height[l], 0)
+                lmax = max(lmax, height[l])
+                l += 1
             else:
-                if rmax > height[j]: water += rmax - height[j]  
-                else: rmax = height[j]
-                j -= 1
+                water += max(rmax - height[r], 0)
+                rmax = max(rmax, height[r])
+                r -= 1
         
         return water
+
