@@ -11,7 +11,7 @@ class Solution:
         isIntMin = False
         if n < 0:
             x = 1 / x
-            if n == -(1 << 32):
+            if n == -(1 << 31):
                 isIntMin = True
                 n += 1
             n  = -n
