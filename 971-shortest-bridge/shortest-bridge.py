@@ -22,15 +22,17 @@ class Solution:
                     # start first DFS
                     # print((i, j))
                     q = [(i, j)]
+                    grid[i][j] = 2
+                    
                     while q:
                         curr_i, curr_j = q.pop()
-                        grid[curr_i][curr_j] = 2
 
                         for i_off, j_off in [[-1, 0], [1, 0], [0, 1], [0, -1]]:
                             new_i = curr_i + i_off
                             new_j = curr_j + j_off
                             if 0 <= new_i < n and 0 <= new_j < n and grid[new_i][new_j] == 1:
                                 q.append((new_i, new_j))
+                                grid[new_i][new_j] = 2
                     break
         
         # print(grid)
