@@ -25,7 +25,7 @@ class Solution:
                 return False
             
             for j in range(i + 1, i + num_bytes):
-                if (((data[j] >> 7) & 1) == 0) or (((data[j] >> 6) & 1) == 1):
+                if (data[j] & 0b11000000 != 0b10000000):
                     return False
             i = i + num_bytes
         
