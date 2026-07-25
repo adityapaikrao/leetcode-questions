@@ -13,10 +13,6 @@ class Solution:
                     return (n - 1 - row, col)
                 else:
                     return (n - 1 - row, n - 1 - col)
-        def get_num(x: int, y: int, n: int) -> int:
-            num = (n - 1 - x) * n
-            num += y if x % 2 == 1 else (n - 1 - y)
-            return num + 1
         
         n = len(board)
         moves = 0
