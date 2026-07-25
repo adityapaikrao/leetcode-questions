@@ -17,15 +17,6 @@ class Solution:
 
         [-1, 1] [0, 0]=> [0, 0]
         """
-        if ax1 > ax2:
-            ax1, ax2 = ax2, ax1
-        if ay1 > ay2:
-            ay1, ay2 = ay2, ay1
-        if bx1 > bx2:
-            bx1, bx2 = bx2, bx1
-        if by1 > by2:
-            by1, by2 = by2, by1
-        
         xlims = [[ax1, ax2], [bx1, bx2]]
         xlims.sort()
         ylims = [[ay1, ay2], [by1, by2]]
