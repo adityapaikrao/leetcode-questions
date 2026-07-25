@@ -21,11 +21,11 @@ class Solution:
                     marked = True
                     # start first DFS
                     # print((i, j))
-                    q = [(i, j)]
+                    q = deque([(i, j)])
                     grid[i][j] = 2
                     
                     while q:
-                        curr_i, curr_j = q.pop()
+                        curr_i, curr_j = q.popleft()
 
                         for i_off, j_off in [[-1, 0], [1, 0], [0, 1], [0, -1]]:
                             new_i = curr_i + i_off
@@ -36,7 +36,6 @@ class Solution:
                     break
         
         # print(grid)
-        q = deque()
         for i in range(n):
             for j in range(n):
                 if grid[i][j] == 1:
