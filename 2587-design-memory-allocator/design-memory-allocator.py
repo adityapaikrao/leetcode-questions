@@ -1,34 +1,76 @@
+class Block:
+    def __init__(self, start: int = -1, size: int = -1):
+        self.start = start
+        self.size = size
+        self.next = None
+
 class Allocator:
 
     def __init__(self, n: int):
-        self.arr = [0] * n # zero -> no allocated
-    
-    def _find_start_block(self, size: int) -> int:
-        curr_size = 0
-        for i in range(len(self.arr)):
-            if self.arr[i] == 0:
-                curr_size += 1
-                if curr_size == size:
-                    return i - size + 1
-            else:
-                curr_size = 0
-        return -1
+        self.head = Block()
+        self.head.next = Block(0, n)
+        self.allocated = defaultdict(list) # mID -> List[(start, size)]
 
     def allocate(self, size: int, mID: int) -> int:
-        start_idx = self._find_start_block(size)
-        if start_idx == -1:
-            return start_idx
-        for i in range(start_idx, start_idx + size):
-            self.arr[i] = mID
-        return start_idx
+        prev = self.head
+        curr = prev.next
+
+        while curr:
+            if curr.size >= size:
+                allocation_start = curr.start
+                curr.start += size
+                curr.size -= size
+                if curr.size == 0:
+                    # remove this block from list
+                    prev.next = curr.next
+                self.allocated[mID].append((allocation_start, size))
+                return allocation_start
+            prev = curr
+            curr = curr.next
+        return -1
 
     def freeMemory(self, mID: int) -> int:
-        count = 0
-        for i in range(len(self.arr)):
-            if self.arr[i] == mID:
-                count += 1
-                self.arr[i] = 0
-        return count
+        freed = 0
+        while self.allocated[mID]:
+            start, size = self.allocated[mID].pop()
+            freed += size
+            self._free_block(start, size)
+        
+        return freed
+    
+    def _free_block(self, start: int, size: int):
+        """
+        [4, 2]
+        (0, 4) (4, 2) [6, 7] (7, 10)
+                                c
+          p
+        """
+        prev = self.head
+        curr = prev.next
+        while curr and curr.start < start:
+            prev = curr
+            curr = curr.next
+
+        # insert free block        
+        new_block = Block(start, size) 
+        prev.next = new_block
+        new_block.next = curr
+
+        merged_block = new_block
+        # merge if possible
+        if prev.start + prev.size == new_block.start:
+            prev.size += new_block.size
+            prev.next = new_block.next
+            merged_block = prev
+        
+        if curr and merged_block.start + merged_block.size == curr.start:
+            merged_block.size += curr.size
+            merged_block.next = curr.next
+
+
+        
+
+
 
 
 # Your Allocator object will be instantiated and called as such:
