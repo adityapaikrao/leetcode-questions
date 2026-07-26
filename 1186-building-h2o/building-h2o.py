@@ -1,34 +1,21 @@
 class H2O:
     def __init__(self):
-        self.cv = threading.Condition()
-        self.numH = 0
-        self.numO = 0
-
+        self.barrier = threading.Barrier(3)
+        self.hydrogen_sema = threading.Semaphore(2)
+        self.oxygen_sema = threading.Semaphore(1)
+        
     def hydrogen(self, releaseHydrogen: 'Callable[[], None]') -> None:
         
         # releaseHydrogen() outputs "H". Do not change or remove this line.
-        with self.cv:
-            while self.numH == 2:
-                self.cv.wait()
-            
-            self.numH += 1
-            releaseHydrogen()
-
-            if self.numH == 2 and self.numO == 1:
-                self.numH, self.numO = 0, 0
-            self.cv.notify_all()
-
+        self.hydrogen_sema.acquire()
+        self.barrier.wait()
+        releaseHydrogen()
+        self.hydrogen_sema.release()
 
     def oxygen(self, releaseOxygen: 'Callable[[], None]') -> None:
         
         # releaseOxygen() outputs "O". Do not change or remove this line.
-        with self.cv:
-            while self.numO == 1:
-                self.cv.wait()
-
-            self.numO += 1
-            releaseOxygen()
-            
-            if self.numH == 2 and self.numO == 1:
-                self.numH, self.numO = 0, 0
-            self.cv.notify_all()
+        self.oxygen_sema.acquire()
+        self.barrier.wait()
+        releaseOxygen()
+        self.oxygen_sema.release()
