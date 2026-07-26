@@ -1,54 +1,34 @@
-"""
-[1,2,3,_,_,_,_,_,_,_]
-     i
-
-mID -> { id:  (start, end)}
-(1, 1) -> {1: (i: i + 1) = (0, 1)}
-(1, 2) -> {1: (0, 1) 2: (1, 2) , 3:(2, 3)}
-
-"""
-
 class Allocator:
 
     def __init__(self, n: int):
-        self.map = defaultdict(list)
-        self.mem = [0] * n
+        self.arr = [0] * n # zero -> no allocated
     
-    def _find_index(self, size: int) -> int:
-        """
-        0 0 1 2 3 3 0 0 0 4 
-                    i
-
-        size = 3
-        """
-        i = 0
-        curr_len = 0
-        while i < len(self.mem):
-            while i < len(self.mem) and self.mem[i] == 0:
-                i += 1
-                curr_len += 1
-                if curr_len == size:
-                    return i - size
-            while i < len(self.mem) and self.mem[i] != 0:
-                i += 1
-            curr_len = 0
+    def _find_start_block(self, size: int) -> int:
+        curr_size = 0
+        for i in range(len(self.arr)):
+            if self.arr[i] == 0:
+                curr_size += 1
+                if curr_size == size:
+                    return i - size + 1
+            else:
+                curr_size = 0
         return -1
-            
 
     def allocate(self, size: int, mID: int) -> int:
-        start = self._find_index(size)
-        if start != -1:
-            for i in range(start, start + size):
-                self.mem[i] = mID
-        return start
-        
+        start_idx = self._find_start_block(size)
+        if start_idx == -1:
+            return start_idx
+        for i in range(start_idx, start_idx + size):
+            self.arr[i] = mID
+        return start_idx
+
     def freeMemory(self, mID: int) -> int:
-        counts = 0
-        for i, val in enumerate(self.mem):
-            if val == mID:
-                self.mem[i] = 0
-                counts += 1
-        return counts
+        count = 0
+        for i in range(len(self.arr)):
+            if self.arr[i] == mID:
+                count += 1
+                self.arr[i] = 0
+        return count
 
 
 # Your Allocator object will be instantiated and called as such:
