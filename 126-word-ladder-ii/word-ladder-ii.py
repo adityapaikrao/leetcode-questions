@@ -53,7 +53,7 @@ class Solution:
             return []
         paths = [endWord]
         all_paths = []
-        print(parents)
+        # print(parents)
         def build_paths(word: str):
             if word == beginWord:
                 # print(paths)
