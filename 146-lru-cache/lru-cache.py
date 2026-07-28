@@ -74,8 +74,8 @@ class LRUCache:
             self._add_to_back(self._hmap[key])
         else:
             self._hmap[key].val = value
-
-        self._move_to_back(self._hmap[key])
+            self._move_to_back(self._hmap[key])
+        
         if len(self._hmap) > self.size:
             removed = self._pop_node(self._head.next)
             del self._hmap[removed.key]
