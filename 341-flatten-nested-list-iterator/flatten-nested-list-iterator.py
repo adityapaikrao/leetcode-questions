@@ -20,25 +20,36 @@
 #        Return None if this NestedInteger holds a single integer
 #        """
 
-# [[[], 2 [3]], 4]
+# [[1, [] [3]], 4]
+"""
+0, [[1, [] [3]], 4]
+stack = []
+
+"""
 
 class NestedIterator:
     def __init__(self, nestedList: [NestedInteger]):
-        self.numbers = deque([])
-        def flatten(nested_list: [NestedInteger]):
-            for nested_int in nested_list:
-                if nested_int.isInteger():
-                    self.numbers.append(nested_int.getInteger())
-                    continue
-                else:
-                    flatten(nested_int.getList())
-        flatten(nestedList)
+        self.stack = [[0, nestedList]]
     
     def next(self) -> int:
-        return self.numbers.popleft()
+        idx, nestedInt = self.stack[-1]
+        self.stack[-1][0] = idx + 1
+        return nestedInt[idx].getInteger()
     
     def hasNext(self) -> bool:
-        return len(self.numbers) > 0
+        while self.stack:
+            index, last = self.stack[-1]
+            # print(index, last)
+            if index == len(last):
+                self.stack.pop()
+                continue
+            if last[index].isInteger():
+                return True
+            else:
+                self.stack[-1][0] += 1
+                self.stack.append([0, last[index].getList()])
+        return False
+
 
 # Your NestedIterator object will be instantiated and called as such:
 # i, v = NestedIterator(nestedList), []
