@@ -18,15 +18,33 @@
 #         Returns the next element in the iteration.
 #         :rtype: int
 #         """
-
 """
-PItr = []Itr
+  1 2 3
+i
+  n
 
-[[[1, 2, 3]]] -> hasnext, next
-            i
-nextInt = Itr.next = 2
+next -> 1 
+  1 2 3
+i
+    n
+  c
 
+peek -> 2
+  1 2 3
+i
+    n
+  c
+next -> 2
+  1 2 3
+i
+      n
+next -> 3
+  1 2 3
+i
+      n
 """
+
+
 
 class PeekingIterator:
     def __init__(self, iterator):
@@ -35,34 +53,31 @@ class PeekingIterator:
         :type iterator: Iterator
         """
         self.itr = iterator
-        self.next_int = self.itr.next()
-        
+        self.next_elem = self.itr.next() if self.itr.hasNext() else None
 
     def peek(self):
         """
         Returns the next element in the iteration without advancing the iterator.
         :rtype: int
         """
-        return self.next_int
+        return self.next_elem
         
 
     def next(self):
         """
         :rtype: int
         """
-        val = self.next_int
-        if self.itr.hasNext():
-            self.next_int = self.itr.next()
-        else:
-            self.next_int = None
-        return val
+        curr_next = self.next_elem
+        self.next_elem = self.itr.next() if self.itr.hasNext() else None
+
+        return curr_next
+        
 
     def hasNext(self):
         """
         :rtype: bool
         """
-        return self.next_int is not None
-
+        return self.next_elem is not None
         
 
 # Your PeekingIterator object will be instantiated and called as such:
