@@ -22,12 +22,11 @@ class BSTIterator:
 
     def next(self) -> int:
         curr = self.stack.pop()
-        val = curr.val
         node = curr.right
         while node:
             self.stack.append(node)
             node = node.left
-        return val
+        return curr.val
 
 
     def hasNext(self) -> bool:
