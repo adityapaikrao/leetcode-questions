@@ -35,7 +35,7 @@ class Solution:
             heapq.heappush(maxes, -nums[i])
             heapq.heappush(mins, nums[i])
 
-            # remove invalid nums from max & mins
+            # remove invalid nums from max & mins; lazy deletion
             while maxes and counts[-maxes[0]] == 0:
                 heapq.heappop(maxes)
             while mins and counts[mins[0]] == 0:
@@ -43,7 +43,6 @@ class Solution:
             
             if -maxes[0] - mins[0] > limit:
                 longest = max(longest, i - start)
-                # print(longest, i, start, maxes, mins)
                 # make valid
                 while -maxes[0] - mins[0] > limit:
                     counts[nums[start]] -= 1
@@ -55,7 +54,6 @@ class Solution:
                         heapq.heappop(maxes)
                     while mins and counts[mins[0]] == 0:
                         heapq.heappop(mins)
-                    
                     start += 1
         
         longest = max(longest, len(nums) - start)
