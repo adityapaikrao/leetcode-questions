@@ -22,8 +22,8 @@ class Solution:
             # Recursive cases
             if q.val < node.val:
                 return getLCA(p, q, node.left)
-            else:
-                return getLCA(p, q, node.right)
+           
+            return getLCA(p, q, node.right)
         
         return getLCA(p, q, root)
         
