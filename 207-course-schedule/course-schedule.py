@@ -1,24 +1,22 @@
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: list[list[int]]) -> bool:
+        visited = [0] * numCourses
         adj = [[] for _ in range(numCourses)]
-        in_degree = [0] * numCourses
         for course, prereq in prerequisites:
             adj[prereq].append(course)
-            in_degree[course] += 1
-        q = deque()
+        
+        def dfs(node: int) -> bool:
+            visited[node] = 1 # mark as currently visiting
+            for nbr in adj[node]:
+                if visited[nbr] == 1:
+                    return False
+                elif visited[nbr] == 2: continue
+                if not dfs(nbr): return False
+            visited[node] = 2
+            return True
+        
         for course in range(numCourses):
-            if in_degree[course] == 0: q.append(course)
-        
-        if not q: return False
-
-        numNodes = 0
-        while q:
-           curr = q.popleft()
-           numNodes += 1
-           for nbr in adj[curr]:
-                in_degree[nbr] -= 1
-                if in_degree[nbr] == 0:
-                    q.append(nbr)
-
-        return numNodes == numCourses
-        
+            if visited[course] == 0:
+                if not dfs(course): return False
+            
+        return True
