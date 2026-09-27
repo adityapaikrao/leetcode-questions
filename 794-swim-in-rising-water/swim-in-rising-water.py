@@ -1,29 +1,23 @@
 class Solution:
     def swimInWater(self, grid: List[List[int]]) -> int:
-        """
-        do a BFS from initial point [(i,j), min_time] # coords, min_time to unlock
-        """
         n, m = len(grid), len(grid[0])
-        q = [(grid[0][0], (0, 0))]
         times = [[float('inf')] * m for _ in range(n)]
-        times[0][0] = grid[0][0]
+        # times[0][0] = 0
 
-        while q:
-            curr_time, curr_node = heapq.heappop(q)
-            if grid[curr_node[0]][curr_node[1]] == -1: continue
+        heap = [(grid[0][0], 0, 0)] # time, row_idx, col_idx
+        while heap:
+            curr_time, curr_row, curr_col = heapq.heappop(heap)
+            if times[curr_row][curr_col] <= curr_time: continue
 
-            if curr_node[0] == n-1 and curr_node[1] == m-1:
-                return curr_time
-
-            grid[curr_node[0]][curr_node[1]] = -1 # mark as visited
-            for x_offset, y_offset in [[-1,0], [1, 0], [0, -1], [0, 1]]:
-                new_x = curr_node[0] + x_offset
-                new_y = curr_node[1] + y_offset
-
-                if 0 <= new_x < n and 0 <= new_y < m and grid[new_x][new_y] != -1:
-                    new_time = max(grid[new_x][new_y], curr_time)
-                    if new_time < times[new_x][new_y]:
-                        times[new_x][new_y] = new_time
-                        heapq.heappush(q,(new_time, (new_x, new_y)))
+            if curr_row == n - 1 and curr_col == m - 1: return curr_time
+            
+            times[curr_row][curr_col] = curr_time
+            for row_offset, col_offset in [[-1, 0], [1, 0], [0, 1], [0, -1]]:
+                new_row = curr_row + row_offset
+                new_col = curr_col + col_offset
+                if 0 <= new_row < n and 0 <= new_col < m:
+                    new_time = max(grid[new_row][new_col], curr_time)
+                    if new_time < times[new_row][new_col]:
+                        heapq.heappush(heap, (new_time, new_row, new_col))
         
-        return 0
+            
