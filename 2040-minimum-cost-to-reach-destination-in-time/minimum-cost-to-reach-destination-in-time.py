@@ -15,18 +15,19 @@ class Solution:
             adj[src].append((dst, time))
             adj[dst].append((src, time))
         
-        costs = [float('inf')] * n
-        # costs[0] = passingFees[0]
+        times = [float("inf")] * n
+        heap = [(passingFees[0], 0, 0)] # cost, time, node
 
-        heap = [(0, passingFees[0], 0)] # time, fees, node
         while heap:
-            curr_time, curr_cost, curr_node = heapq.heappop(heap)
-            if curr_cost >= costs[curr_node]: continue
+            curr_cost, curr_time, curr_node = heapq.heappop(heap)
+            if times[curr_node] <= curr_time: continue
+            if curr_node == n - 1: return curr_cost
 
-            costs[curr_node] = curr_cost
+            times[curr_node] = curr_time
             for nbr, wt in adj[curr_node]:
-                new_cost = curr_cost + passingFees[nbr]
                 new_time = curr_time + wt
-                if new_time <= maxTime and (new_cost < costs[nbr]):
-                    heapq.heappush(heap, (new_time, new_cost, nbr))
-        return costs[-1] if costs[-1] != float('inf') else -1
+                new_cost = curr_cost + passingFees[nbr]
+                if new_time <= maxTime and new_time < times[nbr]:
+                    heapq.heappush(heap, (new_cost, new_time, nbr))
+
+        return -1
