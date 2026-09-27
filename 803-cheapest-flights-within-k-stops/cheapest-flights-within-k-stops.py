@@ -4,19 +4,18 @@ class Solution:
         for u, v, cost in flights:
             adj[u].append((v, cost))
         
-        stops = [float('inf')] * n
-        heap = [(0, 0, src)] # dist, stops, node
+        dist = [float('inf')] * n
+        heap = [(0, 0, src)] # stops, disr, node
 
         while heap:
-            curr_dist, curr_stops, curr_node = heapq.heappop(heap)
-            if curr_node == dst: return curr_dist
-            if curr_stops >= stops[curr_node]: continue
+            curr_stops, curr_dist, curr_node = heapq.heappop(heap)
+            if curr_dist >= dist[curr_node]: continue
+            dist[curr_node] = curr_dist
             if curr_stops == k + 1: continue
-
-            stops[curr_node] = curr_stops
+            
             for nbr, wt in adj[curr_node]:
-                new_stops = curr_stops + 1
-                if new_stops < stops[nbr]:
-                    heapq.heappush(heap, (curr_dist + wt, new_stops, nbr))
+                new_dist = curr_dist + wt
+                if new_dist < dist[nbr]:
+                    heapq.heappush(heap, (curr_stops + 1, curr_dist + wt, nbr))
 
-        return -1 
+        return dist[dst] if dist[dst] != float('inf') else -1
