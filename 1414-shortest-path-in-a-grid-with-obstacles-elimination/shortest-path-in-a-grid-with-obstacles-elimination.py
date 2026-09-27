@@ -22,7 +22,6 @@ class Solution:
                     if new_removals >= 0 and new_removals > elims[new_row][new_col]:
                         elims[new_row][new_col] = new_removals
                         q.append((new_steps, new_removals, new_row, new_col))
-        print(elims)
         return -1
               
             
