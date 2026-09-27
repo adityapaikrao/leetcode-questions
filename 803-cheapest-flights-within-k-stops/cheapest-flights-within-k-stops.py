@@ -5,8 +5,8 @@ class Solution:
             adj[u].append((v, cost))
         
         stops = [k + 2] * n
-        dist = [float('inf')] * n
-        dist[src] = 0
+        # dist = [float('inf')] * n
+        # dist[src] = 0
         heap = [(0, 0, src)] # dist, stops, node
 
         while heap:
@@ -18,7 +18,6 @@ class Solution:
             for nbr, wt in adj[curr_node]:
                 new_stops = curr_stops + 1
                 new_dist = curr_dist + wt
-                if new_dist < dist[nbr] or new_stops < stops[nbr]:
-                    heapq.heappush(heap, (new_dist, new_stops, nbr))
+                heapq.heappush(heap, (new_dist, new_stops, nbr))
         
         return -1
