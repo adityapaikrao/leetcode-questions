@@ -7,7 +7,7 @@ class Solution:
 
         for l in range(1, k + 2):
             curr = 1 - prev
-            dist[curr][:] = dist[prev][:].copy()
+            dist[curr][:] = dist[prev][:]
             changed = False
             for u, v, w in flights:
                 if dist[curr][v] > dist[prev][u] + w:
