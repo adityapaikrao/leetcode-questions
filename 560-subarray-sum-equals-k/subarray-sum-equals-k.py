@@ -1,23 +1,21 @@
 class Solution:
-    def subarraySum(self, nums: List[int], target: int) -> int:
+    def subarraySum(self, nums: List[int], k: int) -> int:
         """
-        [1, 2, 3, -3, 6, 0, 3]
-                      i
-
-        hmap_sum = {0:1, 1:1, 3:2, 6:1
-        }
-        curr_sum = 9
-
-        count = 0 + 1 + 1 + 1 + 1
+          [1, 1, 1] nums
+           i
+        [0,1, 2, 3] prefix
         """
-        hmap_sum = {0: 1}
-        curr_sum = 0
+        prefix = [0] * (len(nums) + 1)
+        hmap = defaultdict(int) # prefix_sum -> counts
+        hmap[0] = 1 
         count = 0
 
-        for num in nums:
-            curr_sum += num
-            if curr_sum - target in hmap_sum:
-                count += hmap_sum[curr_sum - target]
-            hmap_sum[curr_sum] = hmap_sum.get(curr_sum, 0) + 1
-        
+        for i, num in enumerate(nums):
+            prefix[i + 1] = prefix[i] + num
+            if prefix[i + 1] - k in hmap:
+                count += hmap[prefix[i + 1] - k]
+            hmap[prefix[i + 1]] += 1
         return count
+        
+        
+
