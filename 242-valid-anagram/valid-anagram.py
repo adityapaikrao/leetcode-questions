@@ -12,4 +12,12 @@ class Solution:
         return array_s == array_t
 
         """
-        return sorted(s) == sorted(t)
+        array_s = [0] * 26
+        for char in s:
+            array_s[ord(char) - ord('a')] += 1
+        
+        for char in t:
+            array_s[ord(char) - ord('a')] -= 1
+        
+        return all(num == 0 for num in array_s)
+        
