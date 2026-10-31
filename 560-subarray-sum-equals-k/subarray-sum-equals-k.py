@@ -5,16 +5,17 @@ class Solution:
            i
         [0,1, 2, 3] prefix
         """
-        prefix = [0] * (len(nums) + 1)
+        # prefix = [0] * (len(nums) + 1)
+        curr_sum = 0
         hmap = defaultdict(int) # prefix_sum -> counts
         hmap[0] = 1 
         count = 0
 
         for i, num in enumerate(nums):
-            prefix[i + 1] = prefix[i] + num
-            if prefix[i + 1] - k in hmap:
-                count += hmap[prefix[i + 1] - k]
-            hmap[prefix[i + 1]] += 1
+            curr_sum += num
+            if curr_sum - k in hmap:
+                count += hmap[curr_sum - k]
+            hmap[curr_sum] += 1
         return count
         
         
