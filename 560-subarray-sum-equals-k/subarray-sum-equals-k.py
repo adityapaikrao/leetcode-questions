@@ -7,15 +7,14 @@ class Solution:
         """
         # prefix = [0] * (len(nums) + 1)
         curr_sum = 0
-        hmap = defaultdict(int) # prefix_sum -> counts
-        hmap[0] = 1 
+        hmap = {0: 1} # prefix_sum -> counts
         count = 0
 
         for i, num in enumerate(nums):
             curr_sum += num
             if curr_sum - k in hmap:
                 count += hmap[curr_sum - k]
-            hmap[curr_sum] += 1
+            hmap[curr_sum] = hmap.get(curr_sum, 0) + 1
         return count
         
         
