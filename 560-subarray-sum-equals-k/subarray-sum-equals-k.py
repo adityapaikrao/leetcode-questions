@@ -12,8 +12,7 @@ class Solution:
 
         for i, num in enumerate(nums):
             curr_sum += num
-            if curr_sum - k in hmap:
-                count += hmap[curr_sum - k]
+            count += hmap.get(curr_sum - k, 0)
             hmap[curr_sum] = hmap.get(curr_sum, 0) + 1
         return count
         
