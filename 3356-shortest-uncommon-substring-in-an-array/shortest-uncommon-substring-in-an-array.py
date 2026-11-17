@@ -12,21 +12,21 @@ class Solution:
         substrings = {} # string -> sibstrings
         substring_to_string = defaultdict(set)
         for index, string in enumerate(arr):
-            substrings[string] = []
+            substrings[index] = []
             for i in range(len(string)):
                 substring = ''
                 for j in range(i, len(string)):
                     substring += string[j]
-                    substrings[string].append(substring)
+                    substrings[index].append(substring)
                     substring_to_string[substring].add(index)
                 
-            substrings[string].sort(key = lambda x : (len(x), x))
+            substrings[index].sort(key = lambda x : (len(x), x))
         
         # print(substrings)
         answer = []
-        for string in arr:
+        for index in range(len(arr)):
             found = False
-            for substring in substrings[string]:
+            for substring in substrings[index]:
                 if len(substring_to_string[substring]) == 1:
                     answer.append(substring)
                     found = True
