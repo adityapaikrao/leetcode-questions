@@ -9,29 +9,26 @@ class Solution:
         ....
         basically check every substring in lexicographic order and see if it exists
         """
-        substrings = {} # string -> sibstrings
         substring_to_string = defaultdict(set)
-        for index, string in enumerate(arr):
-            substrings[index] = []
-            for i in range(len(string)):
+        for index, string in enumerate(arr): # N
+            for i in range(len(string)): # L 
                 substring = ''
-                for j in range(i, len(string)):
+                for j in range(i, len(string)): # L
                     substring += string[j]
-                    substrings[index].append(substring)
                     substring_to_string[substring].add(index)
                 
-            substrings[index].sort(key = lambda x : (len(x), x))
-        
-        # print(substrings)
-        answer = []
-        for index in range(len(arr)):
-            found = False
-            for substring in substrings[index]:
-                if len(substring_to_string[substring]) == 1:
-                    answer.append(substring)
-                    found = True
-                    break
-            if not found: answer.append('')
+        # Time complexity: O(N * (L^3 + L^2 log L))
+        valid = [substring for substring, index_set in substring_to_string.items() if len(index_set) == 1]
+        answer = [''] * len(arr)
+        count = 0
+        for substring in sorted(valid, key = lambda x : (len(x), x)):
+            for index in substring_to_string[substring]:
+                if answer[index] == '': 
+                    answer[index] = substring
+                    count += 1
+                    if count == len(arr):
+                        return answer
+
         return answer
 
 
