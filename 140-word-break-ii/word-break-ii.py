@@ -2,8 +2,12 @@ class Solution:
     def wordBreak(self, s: str, wordDict: list[str]) -> list[str]:
         n = len(s)
         word_set = set(wordDict)
+        memo = {}
 
         def find_string(index: int) -> List[str]:
+            if index in memo:
+                return memo[index]
+            
             if index == n:
                 return [""]
             
@@ -16,6 +20,7 @@ class Solution:
                             result.append(s[index: i + 1])
                         else:
                             result.append(s[index: i + 1] + f" {suffix}")
+            memo[index] = result
             return result
         
         return find_string(0)
