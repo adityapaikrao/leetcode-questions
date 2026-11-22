@@ -20,11 +20,9 @@ class Solution:
         top_k = []
         for i in range(n, -1, -1):
             buckets[i].sort()
-            if len(buckets[i]) + len(top_k) <= k:
-                top_k.extend(buckets[i])
-            else:
-                needed = k - len(top_k)
-                top_k.extend(buckets[i][:needed])
+            needed = k - len(top_k)
+            if needed < 0: break
+            top_k.extend(buckets[i][:needed])
         
         return top_k
 
