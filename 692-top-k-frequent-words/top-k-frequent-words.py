@@ -8,17 +8,25 @@ class CustomWord:
 
 class Solution:
     def topKFrequent(self, words: list[str], k: int) -> list[str]:
+        n = len(words)
+        buckets = [[] for _ in range(n + 1)]
         freq = defaultdict(int)
-        for i, word in enumerate(words):
+        for word in words:
             freq[word] += 1
         
-        heap = [] # min heap 
-
         for word, count in freq.items():
-            heapq.heappush(heap, (count, CustomWord(word)))
-            if len(heap) > k:
-                heapq.heappop(heap)
+            buckets[count].append(word)
         
-        heap.sort(reverse=True)
-        return [entry[1].word for entry in heap]
+        top_k = []
+        for i in range(n, -1, -1):
+            buckets[i].sort()
+            if len(buckets[i]) + len(top_k) <= k:
+                top_k.extend(buckets[i])
+            else:
+                needed = k - len(top_k)
+                top_k.extend(buckets[i][:needed])
+        
+        return top_k
+
+            
                 
