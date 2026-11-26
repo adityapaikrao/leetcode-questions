@@ -1,56 +1,76 @@
 class Solution:
     def calculate(self, s: str) -> int:
         """
-        3 + 2 * 2 = 7
-        
-        result = 5
-        op = +
-        prev = 2
+        32 + 2 * 2 = 7
+                   i
 
-        if op == + or -:
-            result += currnum or -currnum
-        else:
-            result -= prev # restore prev num
-            result += prev * currnum
+        prev = 4
+        op = *
+        curr_num = 0
+        curr_sum = 7
+
+
+
+        - read num
+            - if op == * or /:
+                - recover prev from curr_sum -= prev
+                - add prev 'op' num to curr_sum
+                - prev = prev 'op' num
+            - else:
+                - curr_sum += prev op num
+                - prev = num
+                - curr_num = 0
+        - read op
+
+
+        curr_sum = 5
+        num = 0
+        curr_op = *
+
         """
+        curr_sum = 0
+        num = 0
         prev = 0
-        op = "+"
-        result = 0
+        op = '+'
 
-        i = 0
-        while i < len(s):
-            # skip space
-            while i < len(s) and s[i] == " ":
-                i += 1
-            if i == len(s): 
-                break
-
-            # read num
-            curr_num = 0
-            while i < len(s) and s[i].isnumeric():
-                curr_num = curr_num * 10 + int(s[i])
-                i += 1
-            
-            # perform op
-            if op in ['+', '-']:
-                result += curr_num if op == '+' else -curr_num
-                prev = curr_num if op == '+' else -curr_num
-            elif op == '/':
-                result -= prev
-                result += int(prev / curr_num)
-                prev = int(prev / curr_num)
+        for char in s:
+            if char == " ": continue
+            if char in ["+", "-", "*", "/"]:
+                # print(prev, op, num, curr_sum)
+                if op == "+":
+                    curr_sum += num
+                    prev = num
+                elif op == "-":
+                    curr_sum -= num
+                    prev = -num
+                elif op == "*":
+                    curr_sum -= prev
+                    curr_sum += prev * num
+                    prev = prev * num
+                else:
+                    curr_sum -= prev
+                    curr_sum += int(prev / num)
+                    prev = int(prev / num)
+                op = char
+                num = 0
             else:
-                result -= prev
-                result += prev * curr_num
-                prev = prev * curr_num
-            
-            # skip spaces
-            while i < len(s) and s[i] == " ":
-                i += 1  
-            
-            # read next op
-            if i < len(s):
-                op = s[i]
-                i += 1
+                num = num * 10 + int(char)
         
-        return result
+        if op == "+":
+            curr_sum += num
+            prev = num
+        elif op == "-":
+            curr_sum -= num
+            prev = -num
+        elif op == "*":
+            curr_sum -= prev
+            curr_sum += prev * num
+            prev = prev * num
+        else:
+            curr_sum -= prev
+            curr_sum += int(prev / num)
+            prev = int(prev / num)
+        
+        return curr_sum
+
+        
