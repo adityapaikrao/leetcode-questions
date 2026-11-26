@@ -1,36 +1,29 @@
 class Solution:
-    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+    def wordBreak(self, s: str, wordDict: list[str]) -> bool:
         word_set = set(wordDict)
-        # memo = {}
-        # def can_break(start: int) -> bool:
-        #     if start in memo:
-        #         return memo[start]
+        n = len(s)
 
-        #     if start >= len(s):
+        # def can_break(idx: int) -> bool:
+            
+        #     if idx == n:
         #         return True
             
-        #     for i in range(start, len(s)):
-        #         if s[start: i + 1] in word_set:
-        #             if can_break(i + 1):
-        #                 memo[start] = True
-        #                 return True
+        #     for i in range(idx, n):
+        #         curr = s[idx: i + 1]
+        #         if curr in word_set:
+        #             if can_break(i + 1): return True
             
-        #     memo[start] = False
         #     return False
-        """
-        l e e t c o d e 
-        i
-              j
-        0 0 0 0 1 0 0 0 1
-                       
-        """
+        
+        # return can_break(0)
 
-        dp = [False] * (len(s) + 1)
+        dp = [False] * (n + 1)
         dp[-1] = True
 
-        for i in range(len(s) - 1, -1, -1):
-            for j in range(i, len(s)):
-                if s[i: j + 1] in word_set and dp[j + 1]:
-                    dp[i] = True
-                    break
+        for i in range(n - 1, -1, -1):
+            for j in range(i, n):
+                curr = s[i: j + 1]
+                if curr in word_set:
+                    dp[i] |= dp[j + 1]
+        
         return dp[0]
