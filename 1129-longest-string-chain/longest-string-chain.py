@@ -1,16 +1,10 @@
 class Solution:
     def longestStrChain(self, words: list[str]) -> int:
-        words.sort(key = lambda word: (len(word), word))
+        words.sort(key = lambda word: len(word))
         n = len(words)
         dp = [1] * n
 
         def is_predecessor(prev: str, curr: str) -> bool:
-            """
-            b d a 
-              i 
-            b a
-              j
-            """
             if len(curr) - len(prev) != 1: return False
             i = j = 0
 
